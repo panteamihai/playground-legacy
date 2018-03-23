@@ -35,7 +35,7 @@ namespace UglyTrivia
             }
         }
 
-        public String createRockQuestion(int index)
+        public string createRockQuestion(int index)
         {
             return "Rock Question " + index;
         }
@@ -45,7 +45,7 @@ namespace UglyTrivia
             return (howManyPlayers() >= 2);
         }
 
-        public bool add(String playerName)
+        public bool add(string playerName)
         {
 
 
@@ -132,7 +132,7 @@ namespace UglyTrivia
         }
 
 
-        private String currentCategory()
+        private string currentCategory()
         {
             if (places[currentPlayer] == 0) return "Pop";
             if (places[currentPlayer] == 4) return "Pop";
