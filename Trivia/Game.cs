@@ -6,6 +6,14 @@ namespace Trivia
 {
     public class Game
     {
+        private enum QuestionCategory
+        {
+            Pop,
+            Science,
+            Sports,
+            Rock
+        }
+
         int _currentPlayer;
         readonly List<string> _players = new List<string>();
 
@@ -155,40 +163,40 @@ namespace Trivia
 
         private void AskQuestion()
         {
-            if (CurrentCategory() == "Pop")
+            if (CurrentCategory() == QuestionCategory.Pop)
             {
                 Console.WriteLine(_popQuestions.First());
                 _popQuestions.RemoveFirst();
             }
-            if (CurrentCategory() == "Science")
+            if (CurrentCategory() == QuestionCategory.Science)
             {
                 Console.WriteLine(_scienceQuestions.First());
                 _scienceQuestions.RemoveFirst();
             }
-            if (CurrentCategory() == "Sports")
+            if (CurrentCategory() == QuestionCategory.Sports)
             {
                 Console.WriteLine(_sportsQuestions.First());
                 _sportsQuestions.RemoveFirst();
             }
-            if (CurrentCategory() == "Rock")
+            if (CurrentCategory() == QuestionCategory.Rock)
             {
                 Console.WriteLine(_rockQuestions.First());
                 _rockQuestions.RemoveFirst();
             }
         }
 
-        private string CurrentCategory()
+        private QuestionCategory CurrentCategory()
         {
-            if (_places[_currentPlayer] == 0) return "Pop";
-            if (_places[_currentPlayer] == 4) return "Pop";
-            if (_places[_currentPlayer] == 8) return "Pop";
-            if (_places[_currentPlayer] == 1) return "Science";
-            if (_places[_currentPlayer] == 5) return "Science";
-            if (_places[_currentPlayer] == 9) return "Science";
-            if (_places[_currentPlayer] == 2) return "Sports";
-            if (_places[_currentPlayer] == 6) return "Sports";
-            if (_places[_currentPlayer] == 10) return "Sports";
-            return "Rock";
+            if (_places[_currentPlayer] == 0) return QuestionCategory.Pop;
+            if (_places[_currentPlayer] == 4) return QuestionCategory.Pop;
+            if (_places[_currentPlayer] == 8) return QuestionCategory.Pop;
+            if (_places[_currentPlayer] == 1) return QuestionCategory.Science;
+            if (_places[_currentPlayer] == 5) return QuestionCategory.Science;
+            if (_places[_currentPlayer] == 9) return QuestionCategory.Science;
+            if (_places[_currentPlayer] == 2) return QuestionCategory.Sports;
+            if (_places[_currentPlayer] == 6) return QuestionCategory.Sports;
+            if (_places[_currentPlayer] == 10) return QuestionCategory.Sports;
+            return QuestionCategory.Rock;
         }
 
         private bool DidPlayerWin()
