@@ -27,6 +27,11 @@ namespace Trivia
                 }).ToList();
         }
 
+        public RandomStub(IEnumerable<int> values)
+        {
+            _seeds.AddRange(values);
+        }
+
         public int Next(int maxValue)
         {
             Console.WriteLine("Interim " + _count);
@@ -36,24 +41,41 @@ namespace Trivia
         public int Count => _count;
     }
 
-
     [TestFixture]
     class GoldenMasterGenerator
     {
         [Test]
-        public void Generate()
+        public void GenerateInput()
         {
-            Console.WriteLine(Path.GetFullPath("Redirect.txt"));
+            Console.WriteLine(Path.GetFullPath("Input.txt"));
 
-            using (var ostrm = new FileStream("Redirect.txt", FileMode.OpenOrCreate, FileAccess.Write))
+            using (var ostrm = new FileStream("Input.txt", FileMode.OpenOrCreate, FileAccess.Write))
             using (var writer = new StreamWriter(ostrm))
             {
+                var rand = new Random();
+                for (var i = 0; i < 10000; i++)
+                {
+                    writer.Write(rand.Next(0, 5) + " " + rand.Next(0, 9) + " ");
+                }
+            }
+        }
 
+        [Test]
+        public void GenerateGoldenMaster()
+        {
+            Console.WriteLine(Path.GetFullPath("Output.txt"));
+
+            using (var istrm = new FileStream("Input.txt", FileMode.Open, FileAccess.Read))
+            using (var ostrm = new FileStream("Output.txt", FileMode.OpenOrCreate, FileAccess.Write))
+            using (var reader = new StreamReader(istrm))
+            using (var writer = new StreamWriter(ostrm))
+            {
                 Console.SetOut(writer);
+                var values = reader.ReadToEnd().Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries).Select(int.Parse);
 
-                var randomizer = new RandomStub();
+                var randomizer = new RandomStub(values);
 
-                for (int i = 0; i < 45; i++)
+                for (var i = 0; i < 5000; i++)
                 {
                     GameRunner.Run(randomizer);
                     Console.WriteLine("Exiting " + randomizer.Count + Environment.NewLine);
