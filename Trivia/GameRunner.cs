@@ -1,5 +1,4 @@
 ﻿using System;
-using UglyTrivia;
 
 namespace Trivia
 {
@@ -37,21 +36,21 @@ namespace Trivia
         {
             Game aGame = new Game();
 
-            aGame.add("Chet");
-            aGame.add("Pat");
-            aGame.add("Sue");
+            aGame.Add("Chet");
+            aGame.Add("Pat");
+            aGame.Add("Sue");
 
             do
             {
-                aGame.roll(random.Next(5) + 1);
+                aGame.Roll(random.Next(5) + 1);
 
                 if (random.Next(9) == 7)
                 {
-                    notAWinner = aGame.wrongAnswer();
+                    notAWinner = aGame.WrongAnswer();
                 }
                 else
                 {
-                    notAWinner = aGame.wasCorrectlyAnswered();
+                    notAWinner = aGame.WasCorrectlyAnswered();
                 }
             }
             while (notAWinner);
