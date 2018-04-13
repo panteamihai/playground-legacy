@@ -1,5 +1,4 @@
 ﻿using NUnit.Framework;
-using NUnit.Framework.Internal;
 using System;
 using System.IO;
 using System.Linq;
@@ -31,6 +30,22 @@ namespace Trivia
 
                 Assert.That(writer.ToString(), Is.EqualTo(master.ReadToEnd()));
             }
+        }
+
+        [Test]
+        public void GivenANewGame_IsPlayable_ReturnsFalse()
+        {
+            var game = new Game();
+
+            Assert.That(game.IsPlayable, Is.False);
+        }
+
+        [Test]
+        public void GivenANewGame_HowManyPlayers_ReturnsZero()
+        {
+            var game = new Game();
+
+            Assert.That(game.HowManyPlayers(), Is.Zero);
         }
     }
 }

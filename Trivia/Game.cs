@@ -39,7 +39,7 @@ namespace Trivia
             }
         }
 
-        public bool Add(string playerName)
+        public void Add(string playerName)
         {
             _players.Add(playerName);
             _places[HowManyPlayers()] = 0;
@@ -48,10 +48,9 @@ namespace Trivia
 
             Console.WriteLine(playerName + " was added");
             Console.WriteLine("They are player number " + _players.Count);
-            return true;
         }
 
-        public string CreateRockQuestion(int index)
+        private string CreateRockQuestion(int index)
         {
             return "Rock Question " + index;
         }
@@ -115,10 +114,7 @@ namespace Trivia
                 if (_currentPlayer == _players.Count) _currentPlayer = 0;
                 return true;
             }
-
-            {
-                return Winner("Answer was corrent!!!!");
-            }
+            return Winner("Answer was corrent!!!!");
         }
 
         private bool Winner(string answerWasCorrent)

@@ -41,10 +41,9 @@ namespace Trivia
         public int Count => _count;
     }
 
-    [TestFixture]
     class GoldenMasterGenerator
     {
-        [Test]
+        //[Test]
         public void GenerateInput()
         {
             Console.WriteLine(Path.GetFullPath("Input.txt"));
@@ -60,7 +59,7 @@ namespace Trivia
             }
         }
 
-        [Test]
+        //[Test]
         public void GenerateGoldenMaster()
         {
             Console.WriteLine(Path.GetFullPath("Output.txt"));
