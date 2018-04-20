@@ -1,0 +1,62 @@
+Load the following into http://ushiroad.com/jsviz/
+
+digraph effectSketchGraph { {
+		node[shape = none,
+			fontsize = 23]
+		"Effect sketches on the Trivia Game"
+	}
+	{
+		node[shape = box];
+		_questions;
+		_currentPlayer;
+		_players;
+		_inPenaltyBox;
+		_isGettingOutOfPenaltyBox;
+		_places;
+		_purses;
+	}
+
+	CreateRockQuestion->_questions;
+
+	Roll->_isGettingOutOfPenaltyBox;
+
+	_players->HowManyPlayers->IsPlayable
+
+	Add->_players->DontKnowYet;
+
+	Add->_inPenaltyBox->Roll;
+
+	Add->_purses;
+
+	Add->_places->CurrentCategory;
+
+	HowManyPlayers->Add;
+
+	Add->ConsoleOut;
+
+	_currentPlayer->CurrentCategory->AskQuestion->_questions;
+
+	AskQuestion->ConsoleOut;
+
+	_currentPlayer->DidPlayerWin->Winner->_purses;
+
+	_purses->DidPlayerWin;
+
+	Roll->ConsoleOut;
+
+	Winner->ConsoleOut;
+
+	CurrentCategory->DontKnowYet->ConsoleOut;
+
+	DontKnowYet->_currentPlayer;
+
+	DontKnowYet->_places;
+
+	Winner->_currentPlayer;
+
+	WrongAnswer->_currentPlayer;
+
+	WrongAnswer->_inPenaltyBox;
+
+	WasCorrectlyAnswered->_currentPlayer->Roll;
+}

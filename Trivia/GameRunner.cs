@@ -46,7 +46,7 @@ namespace Trivia
 
                 if (random.Next(9) == 7)
                 {
-                    notAWinner = aGame.WrongAnswer();
+                    notAWinner = aGame.WasWronglyAnswered();
                 }
                 else
                 {

@@ -47,5 +47,99 @@ namespace Trivia
 
             Assert.That(game.HowManyPlayers(), Is.Zero);
         }
+
+        [Test]
+        public void GivenANewGame_WasCorrectlyAnswered_ThrowsException()
+        {
+            var game = new Game();
+
+            Assert.Throws<ArgumentOutOfRangeException>(() => game.WasCorrectlyAnswered());
+        }
+
+        [Test]
+        public void GivenANewGame_WasWronglyAnswered_ThrowsException()
+        {
+            var game = new Game();
+
+            Assert.Throws<ArgumentOutOfRangeException>(() => game.WasWronglyAnswered());
+        }
+
+        [Test]
+        public void GivenAGameWithOnePlayer_IsPlayable_ReturnsFalse()
+        {
+            var game = new Game();
+            game.Add("Gheo");
+
+            Assert.That(game.IsPlayable(), Is.False);
+        }
+
+        [Test]
+        public void GivenAGameWithOnePlayer_HowManyPlayers_ReturnsOne()
+        {
+            var game = new Game();
+            game.Add("Gheo");
+
+            Assert.That(game.HowManyPlayers(), Is.EqualTo(1));
+        }
+
+        [Test]
+        public void GivenAGameWithOnePlayer_CurrentPlayer_ReturnPlayerName()
+        {
+            var game = new Game();
+            game.Add("Gheo");
+
+           Assert.That(game.CurrentPlayer, Is.EqualTo("Gheo"));
+        }
+
+        [Test]
+        public void GivenANewGame_CurrentPlayer_Throws()
+        {
+            var game = new Game();
+
+            Assert.Throws<ArgumentOutOfRangeException>(() =>
+            {
+                var x = game.CurrentPlayer;
+            });
+        }
+
+        [Test]
+        public void GivenAGameWithOnePlayer_WasCorrectlyAnswered_ReturnsTrue()
+        {
+            var game = new Game();
+            game.Add("Gheo");
+
+            Assert.That(game.WasCorrectlyAnswered(), Is.True);
+        }
+
+        [Test]
+        public void GivenAGameWithOnePlayer_WasWronglyAnswered_ReturnsTrue()
+        {
+            var game = new Game();
+            game.Add("Gheo");
+
+            Assert.That(game.WasWronglyAnswered(), Is.True);
+        }
+
+        [Test]
+        public void GivenAGameWithOnePlayer_WasCorrectlyAnswered_CurrentPlayerStayTheSame()
+        {
+            var game = new Game();
+            game.Add("Gheo");
+
+            game.WasCorrectlyAnswered();
+
+            Assert.That(game.CurrentPlayer, Is.EqualTo("Gheo"));
+        }
+
+        [Test]
+        public void GivenAGameWithOnePlayer_WasWronglyAnswered_CurrentPlayerStayTheSame()
+        {
+            var game = new Game();
+            game.Add("Gheo");
+
+            game.WasWronglyAnswered();
+
+            Assert.That(game.CurrentPlayer, Is.EqualTo("Gheo"));
+        }
     }
 }
