@@ -28,13 +28,7 @@ namespace Trivia
         readonly LinkedList<string> _scienceQuestions = new LinkedList<string>();
         readonly LinkedList<string> _sportsQuestions = new LinkedList<string>();
 
-        public string CurrentPlayer
-        {
-            get
-            {
-                return _players[_currentPlayerIndex];
-            }
-        }
+        public string CurrentPlayer => _players[_currentPlayerIndex];
 
         public Game()
         {
@@ -50,12 +44,12 @@ namespace Trivia
         public void Add(string playerName)
         {
             _players.Add(playerName);
-            _places[HowManyPlayers()] = 0;
-            _purses[HowManyPlayers()] = 0;
-            _inPenaltyBox[HowManyPlayers()] = false;
+            _places[PlayerCount] = 0;
+            _purses[PlayerCount] = 0;
+            _inPenaltyBox[PlayerCount] = false;
 
             Console.WriteLine(playerName + " was added");
-            Console.WriteLine("They are player number " + _players.Count);
+            Console.WriteLine("They are player number " + PlayerCount);
         }
 
         private string CreateRockQuestion(int index)
@@ -63,15 +57,9 @@ namespace Trivia
             return "Rock Question " + index;
         }
 
-        public int HowManyPlayers()
-        {
-            return _players.Count;
-        }
+        public int PlayerCount => _players.Count;
 
-        public bool IsPlayable()
-        {
-            return HowManyPlayers() >= 2;
-        }
+        public bool IsPlayable => PlayerCount >= 2;
 
         public void Roll(int roll)
         {

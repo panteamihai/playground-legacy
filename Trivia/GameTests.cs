@@ -48,7 +48,7 @@ namespace Trivia
         {
             var game = new Game();
 
-            Assert.That(game.HowManyPlayers(), Is.Zero);
+            Assert.That(game.PlayerCount, Is.Zero);
         }
 
         [Test]
@@ -84,7 +84,7 @@ namespace Trivia
             var game = new Game();
             game.Add(PlayerOne);
 
-            Assert.That(game.IsPlayable(), Is.False);
+            Assert.That(game.IsPlayable, Is.False);
         }
 
         [Test]
@@ -93,7 +93,7 @@ namespace Trivia
             var game = new Game();
             game.Add(PlayerOne);
 
-            Assert.That(game.HowManyPlayers(), Is.EqualTo(1));
+            Assert.That(game.PlayerCount, Is.EqualTo(1));
         }
 
         [Test]
@@ -152,7 +152,7 @@ namespace Trivia
             game.Add(PlayerOne);
             game.Add(PlayerTwo);
 
-            Assert.That(game.IsPlayable(), Is.True);
+            Assert.That(game.IsPlayable, Is.True);
         }
 
         [Test]
@@ -162,7 +162,7 @@ namespace Trivia
             game.Add(PlayerOne);
             game.Add(PlayerTwo);
 
-            Assert.That(game.HowManyPlayers(), Is.EqualTo(2));
+            Assert.That(game.PlayerCount, Is.EqualTo(2));
         }
 
         [Test]
