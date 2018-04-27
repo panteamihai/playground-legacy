@@ -1,5 +1,6 @@
 ﻿using NUnit.Framework;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
@@ -12,7 +13,7 @@ namespace Trivia
         private const string PlayerTwo = "Iuon";
 
         [Test]
-        public void IsOutputTheSameAsGoldenMaster()
+        public void GivenGame_WhenRunWithGoldenMasterInput_ThenOutputIsTheSameAsGoldenMasterOutput()
         {
             using (var istrm = new FileStream("Input.txt", FileMode.Open, FileAccess.Read))
             using (var gstrm = new FileStream("Output.txt", FileMode.Open, FileAccess.Read))
@@ -76,6 +77,14 @@ namespace Trivia
             var game = new Game();
 
             Assert.Throws<ArgumentOutOfRangeException>(() => game.WasWronglyAnswered());
+        }
+
+        [Test]
+        public void GivenANewGame_WhenRolling_ThenThrows()
+        {
+            var game = new Game();
+
+            Assert.Throws<InvalidOperationException>(() => game.Roll(5));
         }
 
         [Test]
@@ -143,6 +152,14 @@ namespace Trivia
             game.WasWronglyAnswered();
 
             Assert.That(game.CurrentPlayer, Is.EqualTo(PlayerOne));
+        }
+
+        [Test]
+        public void GivenAGameWithOnePlayer_WhenRolling_ThenThrows()
+        {
+            var game = new Game();
+            game.Add(PlayerOne);
+            Assert.Throws<InvalidOperationException>(() => game.Roll(5));
         }
 
         [Test]
@@ -217,6 +234,61 @@ namespace Trivia
             game.WasWronglyAnswered();
 
             Assert.That(game.CurrentPlayer, Is.EqualTo(PlayerTwo));
+        }
+
+        [Test]
+        public void GivenAGameWithTwoPlayers_WhenCurrentPlayerRolls_ThenCurrentPlayerLocationChangesWithModuloTwelve(
+            [Values(0,1,2,3,4,5,6,7,8,9,10,11,12,13)] int roll)
+        {
+            var game = new Game();
+            game.Add(PlayerOne);
+            game.Add(PlayerTwo);
+
+            game.Roll(roll);
+
+            Assert.That(game.CurrentPlayerLocation, Is.EqualTo(roll % 12));
+        }
+
+        [Test]
+        public void GivenAGameWithTwoPlayers_WhenCurrentPlayerRollsNegativeNumber_ThenThrows(
+            [Values(-1, -2)] int negativeRoll)
+        {
+            var game = new Game();
+            game.Add(PlayerOne);
+            game.Add(PlayerTwo);
+
+            Assert.Throws<ArgumentException>(() => game.Roll(negativeRoll));
+        }
+
+        private static IEnumerable<TestCaseData> CurrentCategoryByCurrentPlayerLocationTestCases
+        {
+            get
+            {
+                yield return new TestCaseData(0).Returns(Game.QuestionCategory.Pop);
+                yield return new TestCaseData(4).Returns(Game.QuestionCategory.Pop);
+                yield return new TestCaseData(8).Returns(Game.QuestionCategory.Pop);
+                yield return new TestCaseData(1).Returns(Game.QuestionCategory.Science);
+                yield return new TestCaseData(5).Returns(Game.QuestionCategory.Science);
+                yield return new TestCaseData(9).Returns(Game.QuestionCategory.Science);
+                yield return new TestCaseData(2).Returns(Game.QuestionCategory.Sports);
+                yield return new TestCaseData(6).Returns(Game.QuestionCategory.Sports);
+                yield return new TestCaseData(10).Returns(Game.QuestionCategory.Sports);
+                yield return new TestCaseData(3).Returns(Game.QuestionCategory.Rock);
+                yield return new TestCaseData(7).Returns(Game.QuestionCategory.Rock);
+                yield return new TestCaseData(11).Returns(Game.QuestionCategory.Rock);
+            }
+        }
+
+        [TestCaseSource(nameof(CurrentCategoryByCurrentPlayerLocationTestCases))]
+        public Game.QuestionCategory GivenAGameWithTwoPlayers_WhenRolling_ThenCurrentCategoryReturnsExpectedQuestionCategory(int roll)
+        {
+            var game = new Game();
+            game.Add(PlayerOne);
+            game.Add(PlayerTwo);
+
+            game.Roll(roll);
+
+            return game.CurrentCategory();
         }
     }
 }

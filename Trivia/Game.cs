@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Linq;
 
 namespace Trivia
 {
     public class Game
     {
-        private enum QuestionCategory
+        public enum QuestionCategory
         {
             Pop,
             Science,
@@ -27,6 +28,12 @@ namespace Trivia
         readonly LinkedList<string> _rockQuestions = new LinkedList<string>();
         readonly LinkedList<string> _scienceQuestions = new LinkedList<string>();
         readonly LinkedList<string> _sportsQuestions = new LinkedList<string>();
+
+        public int CurrentPlayerLocation
+        {
+            get => _places[_currentPlayerIndex];
+            private set => _places[_currentPlayerIndex] = value;
+        }
 
         public string CurrentPlayer => _players[_currentPlayerIndex];
 
@@ -63,6 +70,12 @@ namespace Trivia
 
         public void Roll(int roll)
         {
+            if (roll < 0)
+                throw new ArgumentException("Invalid roll!");
+
+            if (!IsPlayable)
+                throw new InvalidOperationException("Cannot roll if game not playable.");
+
             Console.WriteLine(CurrentPlayer + " is the current player");
             Console.WriteLine("They have rolled a " + roll);
 
@@ -73,7 +86,7 @@ namespace Trivia
                     _isGettingOutOfPenaltyBox = true;
 
                     Console.WriteLine(CurrentPlayer + " is getting out of the penalty box");
-                    DontKnowYet(roll);
+                    Move(roll);
                 }
                 else
                 {
@@ -83,16 +96,16 @@ namespace Trivia
             }
             else
             {
-                DontKnowYet(roll);
+                Move(roll);
             }
         }
 
-        private void DontKnowYet(int roll)
+        private void Move(int roll)
         {
-            _places[_currentPlayerIndex] = _places[_currentPlayerIndex] + roll;
-            if (_places[_currentPlayerIndex] > 11) _places[_currentPlayerIndex] = _places[_currentPlayerIndex] - 12;
+            CurrentPlayerLocation = CurrentPlayerLocation + roll;
+            if (CurrentPlayerLocation > 11) CurrentPlayerLocation = CurrentPlayerLocation - 12;
 
-            Console.WriteLine(CurrentPlayer + "'s new location is " + _places[_currentPlayerIndex]);
+            Console.WriteLine(CurrentPlayer + "'s new location is " + CurrentPlayerLocation);
             Console.WriteLine("The category is " + CurrentCategory());
             AskQuestion();
         }
@@ -161,17 +174,18 @@ namespace Trivia
             }
         }
 
-        private QuestionCategory CurrentCategory()
+        public QuestionCategory CurrentCategory()
         {
-            if (_places[_currentPlayerIndex] == 0) return QuestionCategory.Pop;
-            if (_places[_currentPlayerIndex] == 4) return QuestionCategory.Pop;
-            if (_places[_currentPlayerIndex] == 8) return QuestionCategory.Pop;
-            if (_places[_currentPlayerIndex] == 1) return QuestionCategory.Science;
-            if (_places[_currentPlayerIndex] == 5) return QuestionCategory.Science;
-            if (_places[_currentPlayerIndex] == 9) return QuestionCategory.Science;
-            if (_places[_currentPlayerIndex] == 2) return QuestionCategory.Sports;
-            if (_places[_currentPlayerIndex] == 6) return QuestionCategory.Sports;
-            if (_places[_currentPlayerIndex] == 10) return QuestionCategory.Sports;
+
+            if (CurrentPlayerLocation == 0) return QuestionCategory.Pop;
+            if (CurrentPlayerLocation == 4) return QuestionCategory.Pop;
+            if (CurrentPlayerLocation == 8) return QuestionCategory.Pop;
+            if (CurrentPlayerLocation == 1) return QuestionCategory.Science;
+            if (CurrentPlayerLocation == 5) return QuestionCategory.Science;
+            if (CurrentPlayerLocation == 9) return QuestionCategory.Science;
+            if (CurrentPlayerLocation == 2) return QuestionCategory.Sports;
+            if (CurrentPlayerLocation == 6) return QuestionCategory.Sports;
+            if (CurrentPlayerLocation == 10) return QuestionCategory.Sports;
             return QuestionCategory.Rock;
         }
 
