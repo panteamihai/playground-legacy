@@ -8,8 +8,11 @@ namespace Trivia
     [TestFixture]
     public class GameTests
     {
+        private const string PlayerOne = "Gheo";
+        private const string PlayerTwo = "Iuon";
+
         [Test]
-        public void Verify()
+        public void IsOutputTheSameAsGoldenMaster()
         {
             using (var istrm = new FileStream("Input.txt", FileMode.Open, FileAccess.Read))
             using (var gstrm = new FileStream("Output.txt", FileMode.Open, FileAccess.Read))
@@ -49,6 +52,17 @@ namespace Trivia
         }
 
         [Test]
+        public void GivenANewGame_CurrentPlayer_Throws()
+        {
+            var game = new Game();
+
+            Assert.Throws<ArgumentOutOfRangeException>(() =>
+            {
+                var x = game.CurrentPlayer;
+            });
+        }
+
+        [Test]
         public void GivenANewGame_WasCorrectlyAnswered_ThrowsException()
         {
             var game = new Game();
@@ -68,7 +82,7 @@ namespace Trivia
         public void GivenAGameWithOnePlayer_IsPlayable_ReturnsFalse()
         {
             var game = new Game();
-            game.Add("Gheo");
+            game.Add(PlayerOne);
 
             Assert.That(game.IsPlayable(), Is.False);
         }
@@ -77,7 +91,7 @@ namespace Trivia
         public void GivenAGameWithOnePlayer_HowManyPlayers_ReturnsOne()
         {
             var game = new Game();
-            game.Add("Gheo");
+            game.Add(PlayerOne);
 
             Assert.That(game.HowManyPlayers(), Is.EqualTo(1));
         }
@@ -86,27 +100,16 @@ namespace Trivia
         public void GivenAGameWithOnePlayer_CurrentPlayer_ReturnPlayerName()
         {
             var game = new Game();
-            game.Add("Gheo");
+            game.Add(PlayerOne);
 
-           Assert.That(game.CurrentPlayer, Is.EqualTo("Gheo"));
-        }
-
-        [Test]
-        public void GivenANewGame_CurrentPlayer_Throws()
-        {
-            var game = new Game();
-
-            Assert.Throws<ArgumentOutOfRangeException>(() =>
-            {
-                var x = game.CurrentPlayer;
-            });
+           Assert.That(game.CurrentPlayer, Is.EqualTo(PlayerOne));
         }
 
         [Test]
         public void GivenAGameWithOnePlayer_WasCorrectlyAnswered_ReturnsTrue()
         {
             var game = new Game();
-            game.Add("Gheo");
+            game.Add(PlayerOne);
 
             Assert.That(game.WasCorrectlyAnswered(), Is.True);
         }
@@ -115,7 +118,7 @@ namespace Trivia
         public void GivenAGameWithOnePlayer_WasWronglyAnswered_ReturnsTrue()
         {
             var game = new Game();
-            game.Add("Gheo");
+            game.Add(PlayerOne);
 
             Assert.That(game.WasWronglyAnswered(), Is.True);
         }
@@ -124,22 +127,96 @@ namespace Trivia
         public void GivenAGameWithOnePlayer_WasCorrectlyAnswered_CurrentPlayerStayTheSame()
         {
             var game = new Game();
-            game.Add("Gheo");
+            game.Add(PlayerOne);
 
             game.WasCorrectlyAnswered();
 
-            Assert.That(game.CurrentPlayer, Is.EqualTo("Gheo"));
+            Assert.That(game.CurrentPlayer, Is.EqualTo(PlayerOne));
         }
 
         [Test]
         public void GivenAGameWithOnePlayer_WasWronglyAnswered_CurrentPlayerStayTheSame()
         {
             var game = new Game();
-            game.Add("Gheo");
+            game.Add(PlayerOne);
 
             game.WasWronglyAnswered();
 
-            Assert.That(game.CurrentPlayer, Is.EqualTo("Gheo"));
+            Assert.That(game.CurrentPlayer, Is.EqualTo(PlayerOne));
+        }
+
+        [Test]
+        public void GivenAGameWithTwoPlayers_IsPlayable_ReturnsTrue()
+        {
+            var game = new Game();
+            game.Add(PlayerOne);
+            game.Add(PlayerTwo);
+
+            Assert.That(game.IsPlayable(), Is.True);
+        }
+
+        [Test]
+        public void GivenAGameWithTwoPlayers_HowManyPlayers_ReturnsTwo()
+        {
+            var game = new Game();
+            game.Add(PlayerOne);
+            game.Add(PlayerTwo);
+
+            Assert.That(game.HowManyPlayers(), Is.EqualTo(2));
+        }
+
+        [Test]
+        public void GivenAGameWithTwoPlayers_CurrentPlayer_ReturnFirstPlayerName()
+        {
+            var game = new Game();
+            game.Add(PlayerOne);
+            game.Add(PlayerTwo);
+
+            Assert.That(game.CurrentPlayer, Is.EqualTo(PlayerOne));
+        }
+
+        [Test]
+        public void GivenAGameWithTwoPlayers_WasCorrectlyAnswered_ReturnsTrue()
+        {
+            var game = new Game();
+            game.Add(PlayerOne);
+            game.Add(PlayerTwo);
+
+            Assert.That(game.WasCorrectlyAnswered(), Is.True);
+        }
+
+        [Test]
+        public void GivenAGameWithTwoPlayers_WasWronglyAnswered_ReturnsTrue()
+        {
+            var game = new Game();
+            game.Add(PlayerOne);
+            game.Add(PlayerTwo);
+
+            Assert.That(game.WasWronglyAnswered(), Is.True);
+        }
+
+        [Test]
+        public void GivenAGameWithTwoPlayers_WasCorrectlyAnswered_CurrentPlayerChanges()
+        {
+            var game = new Game();
+            game.Add(PlayerOne);
+            game.Add(PlayerTwo);
+
+            game.WasCorrectlyAnswered();
+
+            Assert.That(game.CurrentPlayer, Is.EqualTo(PlayerTwo));
+        }
+
+        [Test]
+        public void GivenAGameWithTwoPlayers_WasWronglyAnswered_CurrentPlayerChanges()
+        {
+            var game = new Game();
+            game.Add(PlayerOne);
+            game.Add(PlayerTwo);
+
+            game.WasWronglyAnswered();
+
+            Assert.That(game.CurrentPlayer, Is.EqualTo(PlayerTwo));
         }
     }
 }
