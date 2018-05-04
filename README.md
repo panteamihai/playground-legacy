@@ -48,5 +48,11 @@ PS: It's nice to have a [guide].
 ### Part Five - Build up the test suite
 
 * Finish the unplayable game test cases and start the playable game (interesting) ones.
-* Try to see how to draw out the effects of the Roll method.
+* Try to see how to draw out the effects of the `Roll` method.
 * Reason about the domain of a game (use Jeopardy for example) and see if the properties/methods you're thinking about exposing make for good characterization properties from a domain perspective.
+
+### Part Six - DIPing
+
+* Inverse the hard dependency on the questions by introducing a `QuestionsGenerator`
+* The generator will eventually be fed into a `QuestionsProvider` hopefully, there by abstracting the whole category / question part of the game
+* We'll feel the burden of having introduced an enum for the category

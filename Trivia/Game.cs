@@ -24,6 +24,8 @@ namespace Trivia
         readonly int[] _places = new int[6];
         readonly int[] _purses = new int[6];
 
+        private IDictionary<string, Queue<string>> _questions;
+
         readonly LinkedList<string> _popQuestions = new LinkedList<string>();
         readonly LinkedList<string> _rockQuestions = new LinkedList<string>();
         readonly LinkedList<string> _scienceQuestions = new LinkedList<string>();
@@ -46,6 +48,11 @@ namespace Trivia
                 _sportsQuestions.AddLast("Sports Question " + i);
                 _rockQuestions.AddLast(CreateRockQuestion(i));
             }
+        }
+
+        public Game(IGenerator<IDictionary<string, Queue<string>>> questionGenerator)
+        {
+            _questions = questionGenerator.Generate();
         }
 
         public void Add(string playerName)
