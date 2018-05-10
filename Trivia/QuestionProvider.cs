@@ -11,19 +11,19 @@ namespace Trivia
 
     public class QuestionProvider : IQuestionProvider
     {
-        readonly LinkedList<string> _popQuestions = new LinkedList<string>();
-        readonly LinkedList<string> _rockQuestions = new LinkedList<string>();
-        readonly LinkedList<string> _scienceQuestions = new LinkedList<string>();
-        readonly LinkedList<string> _sportsQuestions = new LinkedList<string>();
+        readonly Queue<string> _popQuestions = new Queue<string>();
+        readonly Queue<string> _rockQuestions = new Queue<string>();
+        readonly Queue<string> _scienceQuestions = new Queue<string>();
+        readonly Queue<string> _sportsQuestions = new Queue<string>();
 
         public QuestionProvider()
         {
             for (var i = 0; i < 50; i++)
             {
-                _popQuestions.AddLast("Pop Question " + i);
-                _scienceQuestions.AddLast("Science Question " + i);
-                _sportsQuestions.AddLast("Sports Question " + i);
-                _rockQuestions.AddLast("Rock Question " + i);
+                _popQuestions.Enqueue("Pop Question " + i);
+                _scienceQuestions.Enqueue("Science Question " + i);
+                _sportsQuestions.Enqueue("Sports Question " + i);
+                _rockQuestions.Enqueue("Rock Question " + i);
             }
         }
 
@@ -32,25 +32,25 @@ namespace Trivia
             if (questionCategory == Game.QuestionCategory.Pop)
             {
                 Console.WriteLine(_popQuestions.First());
-                _popQuestions.RemoveFirst();
+                _popQuestions.Dequeue();
             }
 
             if (questionCategory == Game.QuestionCategory.Science)
             {
                 Console.WriteLine(_scienceQuestions.First());
-                _scienceQuestions.RemoveFirst();
+                _scienceQuestions.Dequeue();
             }
 
             if (questionCategory == Game.QuestionCategory.Sports)
             {
                 Console.WriteLine(_sportsQuestions.First());
-                _sportsQuestions.RemoveFirst();
+                _sportsQuestions.Dequeue();
             }
 
             if (questionCategory == Game.QuestionCategory.Rock)
             {
                 Console.WriteLine(_rockQuestions.First());
-                _rockQuestions.RemoveFirst();
+                _rockQuestions.Dequeue();
             }
         }
     }

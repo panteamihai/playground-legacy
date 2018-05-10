@@ -24,8 +24,6 @@ namespace Trivia
         readonly int[] _places = new int[6];
         readonly int[] _purses = new int[6];
 
-        private IDictionary<string, Queue<string>> _questions;
-
         public int CurrentPlayerLocation
         {
             get => _places[_currentPlayerIndex];
@@ -39,11 +37,6 @@ namespace Trivia
         public Game(IQuestionProvider questionProvider)
         {
             _questionProvider = questionProvider;
-        }
-
-        public Game(IGenerator<IDictionary<string, Queue<string>>> questionGenerator)
-        {
-            _questions = questionGenerator.Generate();
         }
 
         public void Add(string playerName)
