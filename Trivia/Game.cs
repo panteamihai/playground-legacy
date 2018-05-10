@@ -7,6 +7,8 @@ namespace Trivia
 {
     public class Game
     {
+        private readonly QuestionProvider _questionProvider;
+
         public enum QuestionCategory
         {
             Pop,
@@ -26,11 +28,6 @@ namespace Trivia
 
         private IDictionary<string, Queue<string>> _questions;
 
-        readonly LinkedList<string> _popQuestions = new LinkedList<string>();
-        readonly LinkedList<string> _rockQuestions = new LinkedList<string>();
-        readonly LinkedList<string> _scienceQuestions = new LinkedList<string>();
-        readonly LinkedList<string> _sportsQuestions = new LinkedList<string>();
-
         public int CurrentPlayerLocation
         {
             get => _places[_currentPlayerIndex];
@@ -39,15 +36,11 @@ namespace Trivia
 
         public string CurrentPlayer => _players[_currentPlayerIndex];
 
-        public Game()
+        public Game() : this(new QuestionProvider()) { }
+
+        public Game(QuestionProvider questionProvider)
         {
-            for (var i = 0; i < 50; i++)
-            {
-                _popQuestions.AddLast("Pop Question " + i);
-                _scienceQuestions.AddLast("Science Question " + i);
-                _sportsQuestions.AddLast("Sports Question " + i);
-                _rockQuestions.AddLast(CreateRockQuestion(i));
-            }
+            _questionProvider = questionProvider;
         }
 
         public Game(IGenerator<IDictionary<string, Queue<string>>> questionGenerator)
@@ -64,11 +57,6 @@ namespace Trivia
 
             Console.WriteLine(playerName + " was added");
             Console.WriteLine("They are player number " + PlayerCount);
-        }
-
-        private string CreateRockQuestion(int index)
-        {
-            return "Rock Question " + index;
         }
 
         public int PlayerCount => _players.Count;
@@ -159,26 +147,8 @@ namespace Trivia
 
         private void AskQuestion()
         {
-            if (CurrentCategory() == QuestionCategory.Pop)
-            {
-                Console.WriteLine(_popQuestions.First());
-                _popQuestions.RemoveFirst();
-            }
-            if (CurrentCategory() == QuestionCategory.Science)
-            {
-                Console.WriteLine(_scienceQuestions.First());
-                _scienceQuestions.RemoveFirst();
-            }
-            if (CurrentCategory() == QuestionCategory.Sports)
-            {
-                Console.WriteLine(_sportsQuestions.First());
-                _sportsQuestions.RemoveFirst();
-            }
-            if (CurrentCategory() == QuestionCategory.Rock)
-            {
-                Console.WriteLine(_rockQuestions.First());
-                _rockQuestions.RemoveFirst();
-            }
+            var questionCategory = CurrentCategory();
+            _questionProvider.AskQuestionByCategory(questionCategory);
         }
 
         public QuestionCategory CurrentCategory()
