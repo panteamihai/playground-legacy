@@ -4,7 +4,12 @@ using System.Linq;
 
 namespace Trivia
 {
-    public class QuestionProvider
+    public interface IQuestionProvider
+    {
+        void AskQuestion(Game.QuestionCategory questionCategory);
+    }
+
+    public class QuestionProvider : IQuestionProvider
     {
         readonly LinkedList<string> _popQuestions = new LinkedList<string>();
         readonly LinkedList<string> _rockQuestions = new LinkedList<string>();
@@ -18,16 +23,11 @@ namespace Trivia
                 _popQuestions.AddLast("Pop Question " + i);
                 _scienceQuestions.AddLast("Science Question " + i);
                 _sportsQuestions.AddLast("Sports Question " + i);
-                _rockQuestions.AddLast(CreateRockQuestion(i));
+                _rockQuestions.AddLast("Rock Question " + i);
             }
         }
 
-        private string CreateRockQuestion(int index)
-        {
-            return "Rock Question " + index;
-        }
-
-        public void AskQuestionByCategory(Game.QuestionCategory questionCategory)
+        public void AskQuestion(Game.QuestionCategory questionCategory)
         {
             if (questionCategory == Game.QuestionCategory.Pop)
             {

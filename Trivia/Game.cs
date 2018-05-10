@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
-using System.Linq;
 
 namespace Trivia
 {
     public class Game
     {
-        private readonly QuestionProvider _questionProvider;
+        private readonly IQuestionProvider _questionProvider;
 
         public enum QuestionCategory
         {
@@ -38,7 +36,7 @@ namespace Trivia
 
         public Game() : this(new QuestionProvider()) { }
 
-        public Game(QuestionProvider questionProvider)
+        public Game(IQuestionProvider questionProvider)
         {
             _questionProvider = questionProvider;
         }
@@ -147,8 +145,7 @@ namespace Trivia
 
         private void AskQuestion()
         {
-            var questionCategory = CurrentCategory();
-            _questionProvider.AskQuestionByCategory(questionCategory);
+            _questionProvider.AskQuestion(CurrentCategory());
         }
 
         public QuestionCategory CurrentCategory()
