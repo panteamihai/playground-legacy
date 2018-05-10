@@ -4,6 +4,11 @@ using System.Linq;
 
 namespace Trivia
 {
+    public interface IGenerator<out TResult>
+    {
+        TResult Generate();
+    }
+
     public class QuestionGenerator : IGenerator<IDictionary<string, Queue<string>>>
     {
         private readonly IEnumerable<string> _categories;

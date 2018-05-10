@@ -7,14 +7,6 @@ namespace Trivia
     {
         private readonly IQuestionProvider _questionProvider;
 
-        public enum QuestionCategory
-        {
-            Pop,
-            Science,
-            Sports,
-            Rock
-        }
-
         int _currentPlayerIndex;
         readonly List<string> _players = new List<string>();
 
@@ -141,7 +133,7 @@ namespace Trivia
             _questionProvider.AskQuestion(CurrentCategory());
         }
 
-        public QuestionCategory CurrentCategory()
+        public string CurrentCategory()
         {
 
             if (CurrentPlayerLocation == 0) return QuestionCategory.Pop;

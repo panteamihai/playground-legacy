@@ -6,7 +6,7 @@ namespace Trivia
 {
     public interface IQuestionProvider
     {
-        void AskQuestion(Game.QuestionCategory questionCategory);
+        void AskQuestion(string questionCategory);
     }
 
     public class QuestionProvider : IQuestionProvider
@@ -27,27 +27,27 @@ namespace Trivia
             }
         }
 
-        public void AskQuestion(Game.QuestionCategory questionCategory)
+        public void AskQuestion(string questionCategory)
         {
-            if (questionCategory == Game.QuestionCategory.Pop)
+            if (questionCategory == QuestionCategory.Pop)
             {
                 Console.WriteLine(_popQuestions.First());
                 _popQuestions.Dequeue();
             }
 
-            if (questionCategory == Game.QuestionCategory.Science)
+            if (questionCategory == QuestionCategory.Science)
             {
                 Console.WriteLine(_scienceQuestions.First());
                 _scienceQuestions.Dequeue();
             }
 
-            if (questionCategory == Game.QuestionCategory.Sports)
+            if (questionCategory == QuestionCategory.Sports)
             {
                 Console.WriteLine(_sportsQuestions.First());
                 _sportsQuestions.Dequeue();
             }
 
-            if (questionCategory == Game.QuestionCategory.Rock)
+            if (questionCategory == QuestionCategory.Rock)
             {
                 Console.WriteLine(_rockQuestions.First());
                 _rockQuestions.Dequeue();
