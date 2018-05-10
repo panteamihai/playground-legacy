@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using static Trivia.QuestionCategory;
 
 namespace Trivia
 {
@@ -136,16 +137,16 @@ namespace Trivia
         public string CurrentCategory()
         {
 
-            if (CurrentPlayerLocation == 0) return QuestionCategory.Pop;
-            if (CurrentPlayerLocation == 4) return QuestionCategory.Pop;
-            if (CurrentPlayerLocation == 8) return QuestionCategory.Pop;
-            if (CurrentPlayerLocation == 1) return QuestionCategory.Science;
-            if (CurrentPlayerLocation == 5) return QuestionCategory.Science;
-            if (CurrentPlayerLocation == 9) return QuestionCategory.Science;
-            if (CurrentPlayerLocation == 2) return QuestionCategory.Sports;
-            if (CurrentPlayerLocation == 6) return QuestionCategory.Sports;
-            if (CurrentPlayerLocation == 10) return QuestionCategory.Sports;
-            return QuestionCategory.Rock;
+            if (CurrentPlayerLocation == 0) return Pop;
+            if (CurrentPlayerLocation == 4) return Pop;
+            if (CurrentPlayerLocation == 8) return Pop;
+            if (CurrentPlayerLocation == 1) return Science;
+            if (CurrentPlayerLocation == 5) return Science;
+            if (CurrentPlayerLocation == 9) return Science;
+            if (CurrentPlayerLocation == 2) return Sports;
+            if (CurrentPlayerLocation == 6) return Sports;
+            if (CurrentPlayerLocation == 10) return Sports;
+            return Rock;
         }
 
         private bool DidPlayerWin()

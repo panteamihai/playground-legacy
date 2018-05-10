@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using static Trivia.QuestionCategory;
 
 namespace Trivia
 {
     public interface IQuestionProvider
     {
+        int GetQuestionCount(string questionCategory);
         void AskQuestion(string questionCategory);
     }
 
@@ -16,42 +18,59 @@ namespace Trivia
         readonly Queue<string> _scienceQuestions;
         readonly Queue<string> _sportsQuestions;
 
-        public QuestionProvider() : this(new QuestionGenerator(
-                                                new[] { QuestionCategory.Pop, QuestionCategory.Rock, QuestionCategory.Science, QuestionCategory.Sports },
-                                                50))
-        {
-        }
+        public QuestionProvider() : this(new QuestionGenerator(new[] { Pop, Rock, Science, Sports }, 50)) { }
 
         public QuestionProvider(IGenerator<IDictionary<string, Queue<string>>> generator)
         {
             var questions = generator.Generate();
-            questions.TryGetValue(QuestionCategory.Pop, out _popQuestions);
-            questions.TryGetValue(QuestionCategory.Rock, out _rockQuestions);
-            questions.TryGetValue(QuestionCategory.Science, out _scienceQuestions);
-            questions.TryGetValue(QuestionCategory.Sports, out _sportsQuestions);
+            questions.TryGetValue(Pop, out _popQuestions);
+            questions.TryGetValue(Rock, out _rockQuestions);
+            questions.TryGetValue(Science, out _scienceQuestions);
+            questions.TryGetValue(Sports, out _sportsQuestions);
+        }
+
+        public int GetQuestionCount(string questionCategory)
+        {
+            IEnumerable<string> questions;
+            switch (questionCategory)
+            {
+                case Pop: questions = _popQuestions;
+                    break;
+                case Rock:
+                    questions = _rockQuestions;
+                    break;
+                case Science:
+                    questions = _scienceQuestions;
+                    break;
+                default:
+                    questions = _sportsQuestions;
+                    break;
+            }
+
+            return questions.Count();
         }
 
         public void AskQuestion(string questionCategory)
         {
-            if (questionCategory == QuestionCategory.Pop)
+            if (questionCategory == Pop)
             {
                 Console.WriteLine(_popQuestions.First());
                 _popQuestions.Dequeue();
             }
 
-            if (questionCategory == QuestionCategory.Science)
+            if (questionCategory == Science)
             {
                 Console.WriteLine(_scienceQuestions.First());
                 _scienceQuestions.Dequeue();
             }
 
-            if (questionCategory == QuestionCategory.Sports)
+            if (questionCategory == Sports)
             {
                 Console.WriteLine(_sportsQuestions.First());
                 _sportsQuestions.Dequeue();
             }
 
-            if (questionCategory == QuestionCategory.Rock)
+            if (questionCategory == Rock)
             {
                 Console.WriteLine(_rockQuestions.First());
                 _rockQuestions.Dequeue();
