@@ -11,20 +11,24 @@ namespace Trivia
 
     public class QuestionProvider : IQuestionProvider
     {
-        readonly Queue<string> _popQuestions = new Queue<string>();
-        readonly Queue<string> _rockQuestions = new Queue<string>();
-        readonly Queue<string> _scienceQuestions = new Queue<string>();
-        readonly Queue<string> _sportsQuestions = new Queue<string>();
+        readonly Queue<string> _popQuestions;
+        readonly Queue<string> _rockQuestions;
+        readonly Queue<string> _scienceQuestions;
+        readonly Queue<string> _sportsQuestions;
 
-        public QuestionProvider()
+        public QuestionProvider() : this(new QuestionGenerator(
+                                                new[] { QuestionCategory.Pop, QuestionCategory.Rock, QuestionCategory.Science, QuestionCategory.Sports },
+                                                50))
         {
-            for (var i = 0; i < 50; i++)
-            {
-                _popQuestions.Enqueue("Pop Question " + i);
-                _scienceQuestions.Enqueue("Science Question " + i);
-                _sportsQuestions.Enqueue("Sports Question " + i);
-                _rockQuestions.Enqueue("Rock Question " + i);
-            }
+        }
+
+        public QuestionProvider(IGenerator<IDictionary<string, Queue<string>>> generator)
+        {
+            var questions = generator.Generate();
+            questions.TryGetValue(QuestionCategory.Pop, out _popQuestions);
+            questions.TryGetValue(QuestionCategory.Rock, out _rockQuestions);
+            questions.TryGetValue(QuestionCategory.Science, out _scienceQuestions);
+            questions.TryGetValue(QuestionCategory.Sports, out _sportsQuestions);
         }
 
         public void AskQuestion(string questionCategory)
