@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using static Trivia.QuestionCategory;
 
@@ -8,7 +7,7 @@ namespace Trivia
     public interface IQuestionProvider
     {
         int GetQuestionCount(string questionCategory);
-        void AskQuestion(string questionCategory);
+        string GetQuestion(string questionCategory);
     }
 
     public class QuestionProvider : IQuestionProvider
@@ -31,10 +30,21 @@ namespace Trivia
 
         public int GetQuestionCount(string questionCategory)
         {
-            IEnumerable<string> questions;
+            return GetQuestions(questionCategory).Count();
+        }
+
+        public string GetQuestion(string questionCategory)
+        {
+            return GetQuestions(questionCategory).Dequeue();
+        }
+
+        private Queue<string> GetQuestions(string questionCategory)
+        {
+            Queue<string> questions;
             switch (questionCategory)
             {
-                case Pop: questions = _popQuestions;
+                case Pop:
+                    questions = _popQuestions;
                     break;
                 case Rock:
                     questions = _rockQuestions;
@@ -47,34 +57,7 @@ namespace Trivia
                     break;
             }
 
-            return questions.Count();
-        }
-
-        public void AskQuestion(string questionCategory)
-        {
-            if (questionCategory == Pop)
-            {
-                Console.WriteLine(_popQuestions.First());
-                _popQuestions.Dequeue();
-            }
-
-            if (questionCategory == Science)
-            {
-                Console.WriteLine(_scienceQuestions.First());
-                _scienceQuestions.Dequeue();
-            }
-
-            if (questionCategory == Sports)
-            {
-                Console.WriteLine(_sportsQuestions.First());
-                _sportsQuestions.Dequeue();
-            }
-
-            if (questionCategory == Rock)
-            {
-                Console.WriteLine(_rockQuestions.First());
-                _rockQuestions.Dequeue();
-            }
+            return questions;
         }
     }
 }

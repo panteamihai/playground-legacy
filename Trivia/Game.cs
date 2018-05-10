@@ -131,7 +131,7 @@ namespace Trivia
 
         private void AskQuestion()
         {
-            _questionProvider.AskQuestion(CurrentCategory());
+            Console.WriteLine(_questionProvider.GetQuestion(CurrentCategory()));
         }
 
         public string CurrentCategory()
