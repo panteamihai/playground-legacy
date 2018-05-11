@@ -7,15 +7,17 @@ namespace Trivia
     {
         private readonly IQuestionProvider _questionProvider;
         private readonly ICategoryProvider _categoryProvider;
+        private readonly PlayerService _playerService;
+        private readonly PlayerLocationService _playerLocationService;
 
-        int _currentPlayerIndex;
-        readonly List<string> _players = new List<string>();
+        private int _currentPlayerIndex;
+        private readonly List<string> _players = new List<string>();
 
-        readonly bool[] _inPenaltyBox = new bool[6];
-        bool _isGettingOutOfPenaltyBox;
+        private readonly bool[] _inPenaltyBox = new bool[6];
+        private bool _isGettingOutOfPenaltyBox;
 
-        readonly int[] _places = new int[6];
-        readonly int[] _purses = new int[6];
+        private readonly int[] _places = new int[6];
+        private readonly int[] _purses = new int[6];
 
         public int CurrentPlayerLocation
         {
@@ -33,6 +35,8 @@ namespace Trivia
         {
             _categoryProvider = new CategoryProvider();
             _questionProvider = new QuestionProvider(_categoryProvider);
+            _playerService = new PlayerService();
+            _playerLocationService = new PlayerLocationService(_playerService);
         }
 
         public Game(ICategoryProvider categoryProvider, IQuestionProvider questionProvider)

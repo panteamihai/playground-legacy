@@ -56,3 +56,8 @@ PS: It's nice to have a [guide].
 * Inverse the hard dependency on the questions by introducing a `QuestionsGenerator`
 * The generator will eventually be fed into a `QuestionsProvider` hopefully, there by abstracting the whole category / question part of the game
 * We'll feel the burden of having introduced an enum for the category
+
+### Part Seven - Pushing the DIP forward
+
+* Having introduced the `ICategoryProvider` and fixed the dependecy hierarchy of the `IQuestionProvider` (specifically the dependency of `IQuestionGenerator` implementation to an `ICategoryProvider` implementation, handled by the `Game` class)
+* Moving on to extracting a service for player location and sensing the other responsabilities of the current `Game` class ripe for an  (read + write = service) extraction to robust collaborators: the player coin standing, the current player information, the penalty box.
