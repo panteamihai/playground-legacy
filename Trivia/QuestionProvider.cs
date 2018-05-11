@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using static Trivia.QuestionCategory;
 
 namespace Trivia
@@ -12,52 +11,23 @@ namespace Trivia
 
     public class QuestionProvider : IQuestionProvider
     {
-        readonly Queue<string> _popQuestions;
-        readonly Queue<string> _rockQuestions;
-        readonly Queue<string> _scienceQuestions;
-        readonly Queue<string> _sportsQuestions;
+        readonly IDictionary<string, Queue<string>> _questions;
 
         public QuestionProvider() : this(new QuestionGenerator(new[] { Pop, Rock, Science, Sports }, 50)) { }
 
         public QuestionProvider(IGenerator<IDictionary<string, Queue<string>>> generator)
         {
-            var questions = generator.Generate();
-            questions.TryGetValue(Pop, out _popQuestions);
-            questions.TryGetValue(Rock, out _rockQuestions);
-            questions.TryGetValue(Science, out _scienceQuestions);
-            questions.TryGetValue(Sports, out _sportsQuestions);
+            _questions = generator.Generate();
         }
 
         public int GetQuestionCount(string questionCategory)
         {
-            return GetQuestions(questionCategory).Count();
+            return _questions[questionCategory].Count;
         }
 
         public string GetQuestion(string questionCategory)
         {
-            return GetQuestions(questionCategory).Dequeue();
-        }
-
-        private Queue<string> GetQuestions(string questionCategory)
-        {
-            Queue<string> questions;
-            switch (questionCategory)
-            {
-                case Pop:
-                    questions = _popQuestions;
-                    break;
-                case Rock:
-                    questions = _rockQuestions;
-                    break;
-                case Science:
-                    questions = _scienceQuestions;
-                    break;
-                default:
-                    questions = _sportsQuestions;
-                    break;
-            }
-
-            return questions;
+            return _questions[questionCategory].Dequeue();
         }
     }
 }
