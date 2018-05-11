@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using static Trivia.QuestionCategory;
 
 namespace Trivia
 {
@@ -13,7 +12,13 @@ namespace Trivia
     {
         readonly IDictionary<string, Queue<string>> _questions;
 
-        public QuestionProvider() : this(new QuestionGenerator(new[] { Pop, Rock, Science, Sports }, 50)) { }
+        public QuestionProvider() : this(new CategoryProvider()) { }
+
+        public QuestionProvider(ICategoryProvider categoryProvider)
+        {
+            var generator = new QuestionGenerator(categoryProvider, 50);
+            _questions = generator.Generate();
+        }
 
         public QuestionProvider(IGenerator<IDictionary<string, Queue<string>>> generator)
         {

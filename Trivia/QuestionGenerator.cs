@@ -14,9 +14,9 @@ namespace Trivia
         private readonly IEnumerable<string> _categories;
         private readonly int _questionsPerCategory;
 
-        public QuestionGenerator(IEnumerable<string> categories, int questionsPerCategory)
+        public QuestionGenerator(ICategoryProvider categoryProvider, int questionsPerCategory)
         {
-            _categories = categories ?? throw new ArgumentNullException();
+            _categories = categoryProvider?.GetCategories() ?? throw new ArgumentNullException();
             _questionsPerCategory = questionsPerCategory >= 0 ? questionsPerCategory : throw new ArgumentException();
         }
 

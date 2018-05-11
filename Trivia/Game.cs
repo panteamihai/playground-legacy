@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using static Trivia.QuestionCategory;
 
 namespace Trivia
 {
     public class Game
     {
         private readonly IQuestionProvider _questionProvider;
+        private readonly ICategoryProvider _categoryProvider;
 
         int _currentPlayerIndex;
         readonly List<string> _players = new List<string>();
@@ -25,10 +25,19 @@ namespace Trivia
 
         public string CurrentPlayer => _players[_currentPlayerIndex];
 
-        public Game() : this(new QuestionProvider()) { }
+        public int PlayerCount => _players.Count;
 
-        public Game(IQuestionProvider questionProvider)
+        public bool IsPlayable => PlayerCount >= 2;
+
+        public Game()
         {
+            _categoryProvider = new CategoryProvider();
+            _questionProvider = new QuestionProvider(_categoryProvider);
+        }
+
+        public Game(ICategoryProvider categoryProvider, IQuestionProvider questionProvider)
+        {
+            _categoryProvider = categoryProvider;
             _questionProvider = questionProvider;
         }
 
@@ -42,10 +51,6 @@ namespace Trivia
             Console.WriteLine(playerName + " was added");
             Console.WriteLine("They are player number " + PlayerCount);
         }
-
-        public int PlayerCount => _players.Count;
-
-        public bool IsPlayable => PlayerCount >= 2;
 
         public void Roll(int roll)
         {
@@ -85,7 +90,6 @@ namespace Trivia
             if (CurrentPlayerLocation > 11) CurrentPlayerLocation = CurrentPlayerLocation - 12;
 
             Console.WriteLine(CurrentPlayer + "'s new location is " + CurrentPlayerLocation);
-            Console.WriteLine("The category is " + CurrentCategory());
             AskQuestion();
         }
 
@@ -131,22 +135,9 @@ namespace Trivia
 
         private void AskQuestion()
         {
-            Console.WriteLine(_questionProvider.GetQuestion(CurrentCategory()));
-        }
-
-        public string CurrentCategory()
-        {
-
-            if (CurrentPlayerLocation == 0) return Pop;
-            if (CurrentPlayerLocation == 4) return Pop;
-            if (CurrentPlayerLocation == 8) return Pop;
-            if (CurrentPlayerLocation == 1) return Science;
-            if (CurrentPlayerLocation == 5) return Science;
-            if (CurrentPlayerLocation == 9) return Science;
-            if (CurrentPlayerLocation == 2) return Sports;
-            if (CurrentPlayerLocation == 6) return Sports;
-            if (CurrentPlayerLocation == 10) return Sports;
-            return Rock;
+            var category = _categoryProvider.GetCategory(CurrentPlayerLocation);
+            Console.WriteLine("The category is " + category);
+            Console.WriteLine(_questionProvider.GetQuestion(category));
         }
 
         private bool DidPlayerWin()

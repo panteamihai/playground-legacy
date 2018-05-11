@@ -80,6 +80,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CategoryProvider.cs" />
+    <Compile Include="CategoryProviderTests.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="QuestionCategory.cs" />
     <Compile Include="GameRunner.cs" />

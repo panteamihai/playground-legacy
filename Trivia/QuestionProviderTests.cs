@@ -14,8 +14,16 @@ namespace Trivia
         [TestCase(Science)]
         public void GivenZeroQuestionsPerCategory_WhenQueryingCount_ReturnsZero(string category)
         {
-            var generator = new QuestionGenerator(new[] { Pop, Rock, Science, Sports }, 0);
-            var provider = new QuestionProvider(generator);
+            var generatorMock = new Mock<IGenerator<IDictionary<string, Queue<string>>>>();
+            generatorMock.Setup(g => g.Generate()).Returns(
+                new Dictionary<string, Queue<string>>
+                {
+                    { Pop, new Queue<string>() },
+                    { Rock, new Queue<string>() },
+                    { Science, new Queue<string>() },
+                    { Sports, new Queue<string>() }
+                });
+            var provider = new QuestionProvider(generatorMock.Object);
 
             var count = provider.GetQuestionCount(category);
 
@@ -28,8 +36,16 @@ namespace Trivia
         [TestCase(Science)]
         public void GivenZeroQuestionsPerCategory_WheAskingQuestion_Throws(string category)
         {
-            var generator = new QuestionGenerator(new[] { Pop, Rock, Science, Sports }, 0);
-            var provider = new QuestionProvider(generator);
+            var generatorMock = new Mock<IGenerator<IDictionary<string, Queue<string>>>>();
+            generatorMock.Setup(g => g.Generate()).Returns(
+                new Dictionary<string, Queue<string>>
+                {
+                    { Pop, new Queue<string>() },
+                    { Rock, new Queue<string>() },
+                    { Science, new Queue<string>() },
+                    { Sports, new Queue<string>() }
+                });
+            var provider = new QuestionProvider(generatorMock.Object);
 
             Assert.Throws<InvalidOperationException>(() => provider.GetQuestion(category));
         }
@@ -40,8 +56,16 @@ namespace Trivia
         [TestCase(Science)]
         public void GivenOneQuestionPerCategory_WhenAskingQuestion_QuestionContainerIsEmptied(string category)
         {
-            var generator = new QuestionGenerator(new[] { Pop, Rock, Science, Sports }, 1);
-            var provider = new QuestionProvider(generator);
+            var generator = new Mock<IGenerator<IDictionary<string, Queue<string>>>>();
+            generator.Setup(g => g.Generate()).Returns(
+                new Dictionary<string, Queue<string>>
+                {
+                    { Pop, new Queue<string>(new[] { "QPop" }) },
+                    { Rock, new Queue<string>(new[] { "QRock" }) },
+                    { Science, new Queue<string>(new[] { "QScience" }) },
+                    { Sports, new Queue<string>(new[] { "QSports" }) }
+                });
+            var provider = new QuestionProvider(generator.Object);
 
             provider.GetQuestion(category);
 
