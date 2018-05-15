@@ -1,50 +1,33 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Reactive;
-using System.Reactive.Linq;
-using System.Reactive.Subjects;
+using System.Linq;
 
 namespace Trivia
 {
     public interface IPlayerService
     {
-        string CurrentPlayer { get; }
+        Player Current { get; }
 
-        int CurrentPlayerIndex { get; }
-
-        int PlayerCount { get; }
+        int Count { get; }
     }
 
     public class PlayerService : IPlayerService
     {
-        private readonly Subject<Unit> _playerAdded = new Subject<Unit>();
-        private readonly List<string> _players = new List<string>();
+        private readonly IList<Player> _players = new List<Player>();
 
-        private int _index;
+        private int _currentOrdinal;
 
-        public IObservable<Unit> PlayerAdded => _playerAdded.AsObservable();
+        public Player Current => _players.Single(p => p.Ordinal == _currentOrdinal);
 
-        public string CurrentPlayer => _players[CurrentPlayerIndex];
+        public int Count => _players.Count;
 
-        public int CurrentPlayerIndex
+        public void AddPlayer(string name)
         {
-            get
-            {
-                if(_players.Count == 0)
-                    throw new InvalidOperationException();
+            var player = new Player(name, _players.Count);
+            _players.Add(player);
 
-                return _index;
-            }
-        }
-
-        public int PlayerCount => _players.Count;
-
-        public void Add(string playerName)
-        {
-            _players.Add(playerName);
-
-            Console.WriteLine(playerName + " was added");
-            Console.WriteLine("They are player number " + PlayerCount);
+            Console.WriteLine(player.Name + " was added");
+            Console.WriteLine("They are player number " + Count);
         }
 
         public void ChangePlayer()
@@ -52,8 +35,19 @@ namespace Trivia
             if(_players.Count == 0)
                 throw new InvalidOperationException();
 
-            _index = _index + 1;
-            if (_index == _players.Count) _index = 0;
+            _currentOrdinal = _currentOrdinal + 1;
+            if (_currentOrdinal == _players.Count) _currentOrdinal = 0;
+        }
+
+        public void MoveCurrentPlayer(int offset)
+        {
+            if (_players.Count == 0)
+                throw new InvalidOperationException();
+
+            if (offset <= 0)
+                throw new ArgumentException();
+
+            Current.Move(offset);
         }
     }
 }

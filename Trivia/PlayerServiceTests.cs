@@ -5,16 +5,20 @@ namespace Trivia
 {
     public class PlayerServiceTests
     {
-        private const string PlayerOne = "Player One";
-        private const string PlayerTwo = "Player Two";
-        private const string PlayerThree = "Player Three";
+        private const string PlayerOneName = "Player One";
+        private const string PlayerTwoName = "Player Two";
+        private const string PlayerThreeName = "Player Three";
+
+        private static readonly Player PlayerOne = new Player(PlayerOneName, 0);
+        private static readonly Player PlayerTwo = new Player(PlayerTwoName, 1);
+        private static readonly Player PlayerThree = new Player(PlayerThreeName, 2);
 
         [Test]
-        public void WhenInitializingService_PlayerCount_IsZero()
+        public void WhenInitializingService_Count_IsZero()
         {
             var playerService = new PlayerService();
 
-            Assert.That(playerService.PlayerCount, Is.Zero);
+            Assert.That(playerService.Count, Is.Zero);
         }
 
         [Test]
@@ -22,7 +26,7 @@ namespace Trivia
         {
             var playerService = new PlayerService();
 
-            Assert.Throws<InvalidOperationException>(() => { var x = playerService.CurrentPlayerIndex; });
+            Assert.Throws<InvalidOperationException>(() => { var x = playerService.Current.Ordinal; });
         }
 
         [Test]
@@ -30,7 +34,7 @@ namespace Trivia
         {
             var playerService = new PlayerService();
 
-            Assert.Throws<InvalidOperationException>(() => { var x = playerService.CurrentPlayer; });
+            Assert.Throws<InvalidOperationException>(() => { var x = playerService.Current; });
         }
 
         [Test]
@@ -42,13 +46,13 @@ namespace Trivia
         }
 
         [Test]
-        public void GivenFreshlyInitializedService_AddingOnePlayer_IncreasesPlayerCount()
+        public void GivenFreshlyInitializedService_AddingOnePlayer_IncreasesCount()
         {
             var playerService = new PlayerService();
 
-            playerService.Add(PlayerOne);
+            playerService.AddPlayer(PlayerOneName);
 
-            Assert.That(playerService.PlayerCount, Is.EqualTo(1));
+            Assert.That(playerService.Count, Is.EqualTo(1));
         }
 
         [Test]
@@ -56,9 +60,9 @@ namespace Trivia
         {
             var playerService = new PlayerService();
 
-            playerService.Add(PlayerOne);
+            playerService.AddPlayer(PlayerOneName);
 
-            Assert.That(playerService.CurrentPlayer, Is.EqualTo(PlayerOne));
+            Assert.That(playerService.Current, Is.EqualTo(PlayerOne));
         }
 
         [Test]
@@ -66,83 +70,113 @@ namespace Trivia
         {
             var playerService = new PlayerService();
 
-            playerService.Add(PlayerOne);
+            playerService.AddPlayer(PlayerOneName);
 
-            Assert.That(playerService.CurrentPlayerIndex, Is.Zero);
+            Assert.That(playerService.Current.Ordinal, Is.Zero);
         }
 
         [Test]
         public void GivenServiceWithOnePlayer_AfterAddingASecondPlayer_CurrentPlayer_StillReturnsTheFirstAddedPlayer()
         {
             var playerService = new PlayerService();
-            playerService.Add(PlayerOne);
+            playerService.AddPlayer(PlayerOneName);
 
-            playerService.Add(PlayerTwo);
+            playerService.AddPlayer(PlayerTwoName);
 
-            Assert.That(playerService.CurrentPlayer, Is.EqualTo(PlayerOne));
+            Assert.That(playerService.Current, Is.EqualTo(PlayerOne));
         }
 
         [Test]
         public void GivenServiceWithOnePlayer_AfterAddingASecondPlayer_CurrentPlayerIndex_StillReturnsZero()
         {
             var playerService = new PlayerService();
-            playerService.Add(PlayerOne);
+            playerService.AddPlayer(PlayerOneName);
 
-            playerService.Add(PlayerTwo);
+            playerService.AddPlayer(PlayerTwoName);
 
-            Assert.That(playerService.CurrentPlayerIndex, Is.Zero);
+            Assert.That(playerService.Current.Ordinal, Is.Zero);
         }
 
         [Test]
-        public void GivenFreshlyInitializedService_AfterAddingTwoPlayers_PlayerCount_ReturnsTwo()
+        public void GivenFreshlyInitializedService_AfterAddingTwoPlayers_Count_ReturnsTwo()
         {
             var playerService = new PlayerService();
 
-            playerService.Add(PlayerOne);
-            playerService.Add(PlayerTwo);
+            playerService.AddPlayer(PlayerOneName);
+            playerService.AddPlayer(PlayerTwoName);
 
-            Assert.That(playerService.PlayerCount, Is.EqualTo(2));
+            Assert.That(playerService.Count, Is.EqualTo(2));
         }
 
         [Test]
         public void GivenTwoPlayers_WhenChangingPlayer_CurrentPlayer_ReturnsTheSecondAddedPlayer()
         {
             var playerService = new PlayerService();
-            playerService.Add(PlayerOne);
-            playerService.Add(PlayerTwo);
+            playerService.AddPlayer(PlayerOneName);
+            playerService.AddPlayer(PlayerTwoName);
 
             playerService.ChangePlayer();
 
-            Assert.That(playerService.CurrentPlayer, Is.EqualTo(PlayerTwo));
+            Assert.That(playerService.Current, Is.EqualTo(PlayerTwo));
         }
 
         [Test]
         public void GivenThreePlayers_WithTheSecondPlayerAsTheCurrentPlayer_WhenChangingPlayer_CurrentPlayer_ReturnsTheThirdAddedPlayer()
         {
             var playerService = new PlayerService();
-            playerService.Add(PlayerOne);
-            playerService.Add(PlayerTwo);
-            playerService.Add(PlayerThree);
+            playerService.AddPlayer(PlayerOneName);
+            playerService.AddPlayer(PlayerTwoName);
+            playerService.AddPlayer(PlayerThreeName);
             playerService.ChangePlayer();
 
             playerService.ChangePlayer();
 
-            Assert.That(playerService.CurrentPlayer, Is.EqualTo(PlayerThree));
+            Assert.That(playerService.Current, Is.EqualTo(PlayerThree));
         }
 
         [Test]
         public void GivenThreePlayers_WithTheThirdPlayerAsTheCurrentPlayer_WhenChangingPlayer_CurrentPlayer_ReturnsTheFirstAddedPlayer()
         {
             var playerService = new PlayerService();
-            playerService.Add(PlayerOne);
-            playerService.Add(PlayerTwo);
-            playerService.Add(PlayerThree);
+            playerService.AddPlayer(PlayerOneName);
+            playerService.AddPlayer(PlayerTwoName);
+            playerService.AddPlayer(PlayerThreeName);
             playerService.ChangePlayer();
             playerService.ChangePlayer();
 
             playerService.ChangePlayer();
 
-            Assert.That(playerService.CurrentPlayer, Is.EqualTo(PlayerOne));
+            Assert.That(playerService.Current, Is.EqualTo(PlayerOne));
+        }
+
+        [Test]
+        public void WhenInitializingService_MovingTheCurrentPlayer_Throws()
+        {
+            var playerService = new PlayerService();
+
+            Assert.Throws<InvalidOperationException>(() => { playerService.MoveCurrentPlayer(1); });
+        }
+
+        [TestCase(-1)]
+        [TestCase(0)]
+        public void GivenServiceWithOnePlayer_MovingByInvalidOffset_Throws(int offset)
+        {
+            var playerService = new PlayerService();
+
+            playerService.AddPlayer(PlayerOneName);
+
+            Assert.Throws<ArgumentException>(() => { playerService.MoveCurrentPlayer(offset); });
+        }
+
+        [Test]
+        public void GivenServiceWithOnePlayer_MovingByPositiveAmount_UpdatesLocationBySameAmount()
+        {
+            var playerService = new PlayerService();
+            playerService.AddPlayer(PlayerOneName);
+
+            playerService.MoveCurrentPlayer(5);
+
+            Assert.That(PlayerOne.Location, Is.EqualTo(new Location(5)));
         }
     }
 }

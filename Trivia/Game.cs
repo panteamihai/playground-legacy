@@ -8,7 +8,6 @@ namespace Trivia
         private readonly IQuestionProvider _questionProvider;
         private readonly ICategoryProvider _categoryProvider;
         private readonly PlayerService _playerService;
-        private readonly PlayerLocationService _playerLocationService;
 
         private int _currentPlayerIndex;
         private readonly List<string> _players = new List<string>();
@@ -36,7 +35,6 @@ namespace Trivia
             _categoryProvider = new CategoryProvider();
             _questionProvider = new QuestionProvider(_categoryProvider);
             _playerService = new PlayerService();
-            _playerLocationService = new PlayerLocationService(_playerService);
         }
 
         public Game(ICategoryProvider categoryProvider, IQuestionProvider questionProvider)
