@@ -9,8 +9,7 @@ namespace Trivia
         private readonly ICategoryProvider _categoryProvider;
         private readonly PlayerService _playerService;
 
-        private int _currentPlayerIndex;
-        private readonly List<string> _players = new List<string>();
+        private int _currentPlayerIndex => _playerService.Current.Ordinal;
 
         private readonly bool[] _inPenaltyBox = new bool[6];
         private bool _isGettingOutOfPenaltyBox;
@@ -20,13 +19,13 @@ namespace Trivia
 
         public int CurrentPlayerLocation
         {
-            get => _places[_currentPlayerIndex];
-            private set => _places[_currentPlayerIndex] = value;
+            get => _playerService.Current.Location.Value;
+            private set => _playerService.Current.Move(value);
         }
 
-        public string CurrentPlayer => _players[_currentPlayerIndex];
+        public string CurrentPlayer => _playerService.Current.Name;
 
-        public int PlayerCount => _players.Count;
+        public int PlayerCount => _playerService.Count;
 
         public bool IsPlayable => PlayerCount >= 2;
 
@@ -45,13 +44,10 @@ namespace Trivia
 
         public void Add(string playerName)
         {
-            _players.Add(playerName);
+            _playerService.AddPlayer(playerName);
             _places[PlayerCount] = 0;
             _purses[PlayerCount] = 0;
             _inPenaltyBox[PlayerCount] = false;
-
-            Console.WriteLine(playerName + " was added");
-            Console.WriteLine("They are player number " + PlayerCount);
         }
 
         public void Roll(int roll)
@@ -88,7 +84,7 @@ namespace Trivia
 
         private void Move(int roll)
         {
-            CurrentPlayerLocation = CurrentPlayerLocation + roll;
+            _playerService.MoveCurrentPlayer(roll);
             if (CurrentPlayerLocation > 11) CurrentPlayerLocation = CurrentPlayerLocation - 12;
 
             Console.WriteLine(CurrentPlayer + "'s new location is " + CurrentPlayerLocation);
@@ -104,8 +100,7 @@ namespace Trivia
                     return Winner("Answer was correct!!!!");
                 }
 
-                _currentPlayerIndex = _currentPlayerIndex + 1;
-                if (_currentPlayerIndex == _players.Count) _currentPlayerIndex = 0;
+                _playerService.ChangePlayer();
                 return true;
             }
             return Winner("Answer was corrent!!!!");
@@ -118,8 +113,7 @@ namespace Trivia
             Console.WriteLine(CurrentPlayer + " now has " + _purses[_currentPlayerIndex] + " Gold Coins.");
 
             var winner = DidPlayerWin();
-            _currentPlayerIndex = _currentPlayerIndex + 1;
-            if (_currentPlayerIndex == _players.Count) _currentPlayerIndex = 0;
+            _playerService.ChangePlayer();
 
             return winner;
         }
@@ -130,8 +124,7 @@ namespace Trivia
             Console.WriteLine(CurrentPlayer + " was sent to the penalty box");
             _inPenaltyBox[_currentPlayerIndex] = true;
 
-            _currentPlayerIndex = _currentPlayerIndex + 1;
-            if (_currentPlayerIndex == _players.Count) _currentPlayerIndex = 0;
+            _playerService.ChangePlayer();
             return true;
         }
 

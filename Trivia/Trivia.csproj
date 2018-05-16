@@ -80,6 +80,7 @@
     <Compile Include="CategoryProvider.cs" />
     <Compile Include="CategoryProviderTests.cs" />
     <Compile Include="Game.cs" />
+    <Compile Include="GoldenMasterTest.cs" />
     <Compile Include="Location.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="PlayerService.cs" />

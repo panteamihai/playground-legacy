@@ -176,7 +176,7 @@ namespace Trivia
 
             playerService.MoveCurrentPlayer(5);
 
-            Assert.That(PlayerOne.Location, Is.EqualTo(new Location(5)));
+            Assert.That(playerService.Current.Location, Is.EqualTo(new Location(5)));
         }
     }
 }

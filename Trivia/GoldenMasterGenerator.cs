@@ -1,17 +1,12 @@
-﻿using System;
+﻿using NUnit.Framework;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using Moq;
-
-using NUnit.Framework;
 
 namespace Trivia
 {
-    class RandomStub : IRandom
+    public class RandomStub : IRandom
     {
         private readonly List<int> _seeds = new List<int>();
 
@@ -62,10 +57,11 @@ namespace Trivia
         //[Test]
         public void GenerateGoldenMaster()
         {
-            Console.WriteLine(Path.GetFullPath("Output.txt"));
+            //"C:\\Users\\mpantea\\AppData\\Local\\JetBrains\\Installations\\ReSharperPlatformVs15_23e94da4\\Output.txt"
+            Console.WriteLine(Path.GetFullPath("GoldenMaster.txt"));
 
             using (var istrm = new FileStream("Input.txt", FileMode.Open, FileAccess.Read))
-            using (var ostrm = new FileStream("Output.txt", FileMode.OpenOrCreate, FileAccess.Write))
+            using (var ostrm = new FileStream("GoldenMaster.txt", FileMode.OpenOrCreate, FileAccess.Write))
             using (var reader = new StreamReader(istrm))
             using (var writer = new StreamWriter(ostrm))
             {

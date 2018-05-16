@@ -1,6 +1,5 @@
 ﻿using NUnit.Framework;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
@@ -11,30 +10,6 @@ namespace Trivia
     {
         private const string PlayerOne = "Gheo";
         private const string PlayerTwo = "Iuon";
-
-        [Test]
-        public void GivenGame_WhenRunWithGoldenMasterInput_ThenOutputIsTheSameAsGoldenMasterOutput()
-        {
-            using (var istrm = new FileStream("Input.txt", FileMode.Open, FileAccess.Read))
-            using (var gstrm = new FileStream("Output.txt", FileMode.Open, FileAccess.Read))
-            using (var input = new StreamReader(istrm))
-            using (var master = new StreamReader(gstrm))
-            using(var writer = new StringWriter())
-            {
-                Console.SetOut(writer);
-                var values = input.ReadToEnd().Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries).Select(int.Parse);
-
-                var randomizer = new RandomStub(values);
-
-                for (var i = 0; i < 5000; i++)
-                {
-                    GameRunner.Run(randomizer);
-                    Console.WriteLine("Exiting " + randomizer.Count + Environment.NewLine);
-                }
-
-                Assert.That(writer.ToString(), Is.EqualTo(master.ReadToEnd()));
-            }
-        }
 
         [Test]
         public void GivenANewGame_IsPlayable_ReturnsFalse()
@@ -57,10 +32,7 @@ namespace Trivia
         {
             var game = new Game();
 
-            Assert.Throws<ArgumentOutOfRangeException>(() =>
-            {
-                var x = game.CurrentPlayer;
-            });
+            Assert.Throws<InvalidOperationException>(() => { var x = game.CurrentPlayer; });
         }
 
         [Test]
@@ -68,7 +40,7 @@ namespace Trivia
         {
             var game = new Game();
 
-            Assert.Throws<ArgumentOutOfRangeException>(() => game.WasCorrectlyAnswered());
+            Assert.Throws<InvalidOperationException>(() => game.WasCorrectlyAnswered());
         }
 
         [Test]
@@ -76,7 +48,7 @@ namespace Trivia
         {
             var game = new Game();
 
-            Assert.Throws<ArgumentOutOfRangeException>(() => game.WasWronglyAnswered());
+            Assert.Throws<InvalidOperationException>(() => game.WasWronglyAnswered());
         }
 
         [Test]
@@ -238,7 +210,7 @@ namespace Trivia
 
         [Test]
         public void GivenAGameWithTwoPlayers_WhenCurrentPlayerRolls_ThenCurrentPlayerLocationChangesWithModuloTwelve(
-            [Values(0,1,2,3,4,5,6,7,8,9,10,11,12,13)] int roll)
+            [Values(1,2,3,4,5,6,7,8,9,10,11,12,13)] int roll)
         {
             var game = new Game();
             game.Add(PlayerOne);
