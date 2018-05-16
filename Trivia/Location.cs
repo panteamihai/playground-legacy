@@ -37,7 +37,7 @@
 
         public override string ToString()
         {
-            return $"Location ({Value})";
+            return Value.ToString();
         }
     }
 }

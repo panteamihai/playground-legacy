@@ -4,7 +4,7 @@
 Invite a group of programmers together for a **one hour and a half** workshop every week, give them some legacy code, and help them practice various design rescue and improvement techniques.
 The ultimate goal is to practice these techniques in a low-stakes environment away from the code base that probably torments programmers at work.
 
-\* [even though you're not supposed to].
+\* [try to favor the retreat flavor].
 
 ### The refactoring project
 We're going to be using the **[Trivia Game]** (solely the C# flavor) and incrementally try to improve it using refactoring techniques
@@ -61,3 +61,7 @@ PS: It's nice to have a [guide].
 
 * Having introduced the `ICategoryProvider` and fixed the dependecy hierarchy of the `IQuestionProvider` (specifically the dependency of `IQuestionGenerator` implementation to an `ICategoryProvider` implementation, handled by the `Game` class)
 * Moving on to extracting a service for player location and sensing the other responsabilities of the current `Game` class ripe for an  (read + write = service) extraction to robust collaborators: the player coin standing, the current player information, the penalty box.
+
+### Part Eight - Consolidating the service
+* Introduce a Player class to encapsulate the domain characteristics of a player: name and ordinal at first. Then start to incorporate the location, and subsequently the coin standing and the penalty box relationship.
+* Transfer the game logic to the player service in steps related to functionality: location, coin standing, etc.

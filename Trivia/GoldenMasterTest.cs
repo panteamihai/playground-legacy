@@ -7,7 +7,6 @@ namespace Trivia
 {
     public class GoldenMasterTest
     {
-
         [Test]
         public void GivenGame_WhenRunWithGoldenMasterInput_ThenOutputIsTheSameAsGoldenMasterOutput()
         {
@@ -17,6 +16,7 @@ namespace Trivia
             using (var goldenMaster = new StreamReader(gstrm))
             using (var output = new StringWriter())
             {
+                var @out = Console.Out;
                 Console.SetOut(output);
                 var values = input.ReadToEnd().Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries).Select(int.Parse);
 
@@ -30,7 +30,10 @@ namespace Trivia
 
                 var runOutput = output.ToString();
                 File.WriteAllText("Output.txt", runOutput);
+
                 Assert.That(runOutput, Is.EqualTo(goldenMaster.ReadToEnd()));
+
+                Console.SetOut(@out);
             }
         }
     }

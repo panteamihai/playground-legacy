@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace Trivia
 {
@@ -14,14 +13,9 @@ namespace Trivia
         private readonly bool[] _inPenaltyBox = new bool[6];
         private bool _isGettingOutOfPenaltyBox;
 
-        private readonly int[] _places = new int[6];
         private readonly int[] _purses = new int[6];
 
-        public int CurrentPlayerLocation
-        {
-            get => _playerService.Current.Location.Value;
-            private set => _playerService.Current.Move(value);
-        }
+        public int CurrentPlayerLocation => _playerService.Current.Location.Value;
 
         public string CurrentPlayer => _playerService.Current.Name;
 
@@ -44,8 +38,7 @@ namespace Trivia
 
         public void Add(string playerName)
         {
-            _playerService.AddPlayer(playerName);
-            _places[PlayerCount] = 0;
+            _playerService.Add(playerName);
             _purses[PlayerCount] = 0;
             _inPenaltyBox[PlayerCount] = false;
         }
@@ -85,9 +78,6 @@ namespace Trivia
         private void Move(int roll)
         {
             _playerService.MoveCurrentPlayer(roll);
-            if (CurrentPlayerLocation > 11) CurrentPlayerLocation = CurrentPlayerLocation - 12;
-
-            Console.WriteLine(CurrentPlayer + "'s new location is " + CurrentPlayerLocation);
             AskQuestion();
         }
 
@@ -100,7 +90,7 @@ namespace Trivia
                     return Winner("Answer was correct!!!!");
                 }
 
-                _playerService.ChangePlayer();
+                _playerService.GiveTurnToNextPlayer();
                 return true;
             }
             return Winner("Answer was corrent!!!!");
@@ -113,7 +103,7 @@ namespace Trivia
             Console.WriteLine(CurrentPlayer + " now has " + _purses[_currentPlayerIndex] + " Gold Coins.");
 
             var winner = DidPlayerWin();
-            _playerService.ChangePlayer();
+            _playerService.GiveTurnToNextPlayer();
 
             return winner;
         }
@@ -124,7 +114,7 @@ namespace Trivia
             Console.WriteLine(CurrentPlayer + " was sent to the penalty box");
             _inPenaltyBox[_currentPlayerIndex] = true;
 
-            _playerService.ChangePlayer();
+            _playerService.GiveTurnToNextPlayer();
             return true;
         }
 

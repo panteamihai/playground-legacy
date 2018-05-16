@@ -21,7 +21,7 @@ namespace Trivia
 
         public int Count => _players.Count;
 
-        public void AddPlayer(string name)
+        public void Add(string name)
         {
             var player = new Player(name, _players.Count);
             _players.Add(player);
@@ -30,7 +30,7 @@ namespace Trivia
             Console.WriteLine("They are player number " + Count);
         }
 
-        public void ChangePlayer()
+        public void GiveTurnToNextPlayer()
         {
             if(_players.Count == 0)
                 throw new InvalidOperationException();
@@ -48,6 +48,7 @@ namespace Trivia
                 throw new ArgumentException();
 
             Current.Move(offset);
+            Console.WriteLine(Current.Name + "'s new location is " + Current.Location);
         }
     }
 }
