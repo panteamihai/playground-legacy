@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
+using trivia.services;
 
-namespace Trivia
+namespace trivia.providers
 {
     public interface IQuestionProvider
     {
@@ -16,13 +17,13 @@ namespace Trivia
 
         public QuestionProvider(ICategoryProvider categoryProvider)
         {
-            var generator = new QuestionGenerator(categoryProvider, 50);
-            _questions = generator.Generate();
+            var generator = new QuestionService(categoryProvider, 50);
+            _questions = generator.Get();
         }
 
-        public QuestionProvider(IGenerator<IDictionary<string, Queue<string>>> generator)
+        public QuestionProvider(IQuestionService questionService)
         {
-            _questions = generator.Generate();
+            _questions = questionService.Get();
         }
 
         public int GetQuestionCount(string questionCategory)

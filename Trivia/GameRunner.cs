@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Trivia
+namespace trivia
 {
     public interface IRandom
     {
@@ -32,7 +32,7 @@ namespace Trivia
             Run(new MyRandom());
         }
 
-        internal static void Run(IRandom random)
+        public static void Run(IRandom random)
         {
             Game aGame = new Game();
 

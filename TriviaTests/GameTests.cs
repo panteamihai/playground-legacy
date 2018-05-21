@@ -1,9 +1,7 @@
 ﻿using NUnit.Framework;
 using System;
-using System.IO;
-using System.Linq;
 
-namespace Trivia
+namespace trivia.tests
 {
     [TestFixture]
     public class GameTests

@@ -1,6 +1,8 @@
 ﻿using System;
+using trivia.providers;
+using trivia.services;
 
-namespace Trivia
+namespace trivia
 {
     public class Game
     {

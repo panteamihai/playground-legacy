@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using trivia.models;
 
-namespace Trivia
+namespace trivia.services
 {
     public interface IPlayerService
     {

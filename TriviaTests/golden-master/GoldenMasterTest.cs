@@ -3,7 +3,7 @@ using System;
 using System.IO;
 using System.Linq;
 
-namespace Trivia
+namespace trivia.tests
 {
     public class GoldenMasterTest
     {

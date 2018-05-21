@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using static Trivia.QuestionCategory;
+using trivia.enums;
 
-namespace Trivia
+namespace trivia.providers
 {
     public interface ICategoryProvider
     {
@@ -13,7 +13,7 @@ namespace Trivia
     {
         public IEnumerable<string> GetCategories()
         {
-            return new[] { Pop, Rock, Science, Sports };
+            return new[] { QuestionCategory.Pop, QuestionCategory.Rock, QuestionCategory.Science, QuestionCategory.Sports };
         }
 
         public string GetCategory(int position)
@@ -21,13 +21,13 @@ namespace Trivia
             switch (position % 4)
             {
                 case 0:
-                    return Pop;
+                    return QuestionCategory.Pop;
                 case 1:
-                    return Science;
+                    return QuestionCategory.Science;
                 case 2:
-                    return Sports;
+                    return QuestionCategory.Sports;
                 default:
-                    return Rock;
+                    return QuestionCategory.Rock;
             }
         }
     }

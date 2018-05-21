@@ -1,34 +1,35 @@
-﻿using NUnit.Framework;
+﻿using Moq;
+using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using trivia.providers;
+using trivia.services;
 
-using Moq;
-
-namespace Trivia
+namespace trivia.tests.services
 {
-    class QuestionGeneratorTests
+    public class QuestionServiceTests
     {
         [Test]
         public void GivenNullAsCategories_WhenConstructingQuestionGenerator_ThenThrows()
         {
-            Assert.Throws<ArgumentNullException>(() => new QuestionGenerator(null, 5));
+            Assert.Throws<ArgumentNullException>(() => new QuestionService(null, 5));
         }
 
         [Test]
         public void GivenNegativeNumberOfQuestions_WhenConstructingQuestionGenerator_ThenThrows()
         {
             var categoryProvider = GetCategoryProvider(new[] { "Poop" });
-            Assert.Throws<ArgumentException>(() => new QuestionGenerator(categoryProvider, -4));
+            Assert.Throws<ArgumentException>(() => new QuestionService(categoryProvider, -4));
         }
 
         [Test]
         public void GivenEmptyListOfCategories_WhenGeneratingQuestions_ReturnsEmpty()
         {
             var categoryProvider = GetCategoryProvider(Enumerable.Empty<string>());
-            var questionGenerator = new QuestionGenerator(categoryProvider, 5);
+            var questionGenerator = new QuestionService(categoryProvider, 5);
 
-            var questions = questionGenerator.Generate();
+            var questions = questionGenerator.Get();
 
             Assert.That(questions, Is.Empty);
         }
@@ -37,9 +38,9 @@ namespace Trivia
         public void GivenZeroNumberOfQUestions_WHenGenerating_ThenReturnDictionaryWithEmptyListsAsValues()
         {
             var categoryProvider = GetCategoryProvider(new[] { "Poop" });
-            var questionGenerator = new QuestionGenerator(categoryProvider, 0);
+            var questionGenerator = new QuestionService(categoryProvider, 0);
 
-            var questions = questionGenerator.Generate();
+            var questions = questionGenerator.Get();
 
             Assert.That(questions["Poop"], Is.Empty);
         }
@@ -48,9 +49,9 @@ namespace Trivia
         public void GivenOneCategoryWithOneQuestion_WhenGenerating_ThenResultContainsOneActualQuestion()
         {
             var categoryProvider = GetCategoryProvider(new[] { "Poop" });
-            var questionGenerator = new QuestionGenerator(categoryProvider, 1);
+            var questionGenerator = new QuestionService(categoryProvider, 1);
 
-            var questions = questionGenerator.Generate();
+            var questions = questionGenerator.Get();
 
             Assert.That(questions["Poop"].Single(), Is.EqualTo("Poop Question 0"));
         }

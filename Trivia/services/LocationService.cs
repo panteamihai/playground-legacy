@@ -1,6 +1,7 @@
 ﻿using System;
+using trivia.models;
 
-namespace Trivia
+namespace trivia.services
 {
     public interface ILocationService
     {

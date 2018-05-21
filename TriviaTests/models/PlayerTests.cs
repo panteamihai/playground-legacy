@@ -1,7 +1,8 @@
 ﻿using NUnit.Framework;
 using System;
+using trivia.models;
 
-namespace Trivia
+namespace trivia.tests.models
 {
     public class PlayerTests
     {

@@ -1,4 +1,4 @@
-﻿namespace Trivia
+﻿namespace trivia.enums
 {
     public static class QuestionCategory
     {

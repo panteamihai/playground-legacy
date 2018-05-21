@@ -1,26 +1,27 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using trivia.providers;
 
-namespace Trivia
+namespace trivia.services
 {
-    public interface IGenerator<out TResult>
+    public interface IQuestionService
     {
-        TResult Generate();
+        IDictionary<string, Queue<string>> Get();
     }
 
-    public class QuestionGenerator : IGenerator<IDictionary<string, Queue<string>>>
+    public class QuestionService : IQuestionService
     {
         private readonly IEnumerable<string> _categories;
         private readonly int _questionsPerCategory;
 
-        public QuestionGenerator(ICategoryProvider categoryProvider, int questionsPerCategory)
+        public QuestionService(ICategoryProvider categoryProvider, int questionsPerCategory)
         {
             _categories = categoryProvider?.GetCategories() ?? throw new ArgumentNullException();
             _questionsPerCategory = questionsPerCategory >= 0 ? questionsPerCategory : throw new ArgumentException();
         }
 
-        public IDictionary<string, Queue<string>> Generate()
+        public IDictionary<string, Queue<string>> Get()
         {
             return _categories.ToDictionary(
                     c => c,

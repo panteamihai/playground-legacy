@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Trivia
+namespace trivia.models
 {
     public class Location
     {
