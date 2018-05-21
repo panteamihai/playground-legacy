@@ -10,6 +10,8 @@ namespace trivia.models
 
         public Location Location { get; private set; }
 
+        public CoinBalance CoinBalance { get; private set; }
+
         public Player(string name, int ordinal)
         {
             if (string.IsNullOrWhiteSpace(name))
@@ -19,15 +21,19 @@ namespace trivia.models
                 throw new ArgumentException();
 
             Name = name;
-
             Ordinal = ordinal;
-
             Location = Location.Start;
+            CoinBalance = CoinBalance.Empty;
         }
 
         public void MoveTo(Location location)
         {
             Location = location;
+        }
+
+        public void UpdateBalance(CoinBalance coinBalance)
+        {
+            CoinBalance = coinBalance;
         }
 
         public override int GetHashCode()

@@ -57,10 +57,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="models\CoinsTests.cs" />
     <Compile Include="providers\CategoryProviderTests.cs" />
     <Compile Include="GameTests.cs" />
     <Compile Include="golden-master\GoldenMasterGenerator.cs" />
     <Compile Include="golden-master\GoldenMasterTest.cs" />
+    <Compile Include="services\CoinServiceTests.cs" />
     <Compile Include="services\LocationServiceTests.cs" />
     <Compile Include="models\LocationTests.cs" />
     <Compile Include="services\PlayerServiceTests.cs" />

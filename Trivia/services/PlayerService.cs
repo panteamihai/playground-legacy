@@ -16,20 +16,26 @@ namespace trivia.services
         void GiveTurnToNextPlayer();
 
         void Move(int offset);
+
+        void CollectOneCoin();
+
+        bool HasCurrentPlayerWon();
     }
 
     public class PlayerService : IPlayerService
     {
         private readonly ILocationService _locationService;
+        private readonly ICoinService _coinService;
         private readonly IList<Player> _players = new List<Player>();
 
         private int _currentOrdinal;
 
-        public PlayerService() : this(new LocationService()) { }
+        public PlayerService() : this(new LocationService(), new CoinService()) { }
 
-        public PlayerService(ILocationService locationService)
+        public PlayerService(ILocationService locationService, ICoinService coinService)
         {
             _locationService = locationService;
+            _coinService = coinService;
         }
 
         public Player Current => _players.Single(p => p.Ordinal == _currentOrdinal);
@@ -63,6 +69,19 @@ namespace trivia.services
             Console.WriteLine(Current + "'s new location is " + newLocation);
 
             Current.MoveTo(newLocation);
+        }
+
+        public void CollectOneCoin()
+        {
+            var coinBalance = _coinService.Accumulate(Current.CoinBalance, 1);
+            Console.WriteLine(Current + " now has " + coinBalance + " Gold Coins.");
+
+            Current.UpdateBalance(coinBalance);
+        }
+
+        public bool HasCurrentPlayerWon()
+        {
+            return _coinService.HasWinningThresholdBeenReached(Current.CoinBalance);
         }
     }
 }

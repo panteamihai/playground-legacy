@@ -15,7 +15,6 @@ namespace trivia
         private readonly bool[] _inPenaltyBox = new bool[6];
         private bool _isGettingOutOfPenaltyBox;
 
-        private readonly int[] _purses = new int[6];
 
         public int CurrentPlayerLocation => _playerService.Current.Location.Value;
 
@@ -24,7 +23,6 @@ namespace trivia
         public int PlayerCount => _playerService.Count;
 
         public bool IsPlayable => PlayerCount >= 2;
-
 
         public Game()
         {
@@ -43,7 +41,6 @@ namespace trivia
         public void Add(string playerName)
         {
             _playerService.Add(playerName);
-            _purses[PlayerCount] = 0;
             _inPenaltyBox[PlayerCount] = false;
         }
 
@@ -103,13 +100,12 @@ namespace trivia
         private bool Winner(string answerWasCorrent)
         {
             Console.WriteLine(answerWasCorrent);
-            _purses[_currentPlayerIndex]++;
-            Console.WriteLine(CurrentPlayer + " now has " + _purses[_currentPlayerIndex] + " Gold Coins.");
+            _playerService.CollectOneCoin();
 
-            var winner = DidPlayerWin();
+            var lost = !_playerService.HasCurrentPlayerWon();
             _playerService.GiveTurnToNextPlayer();
 
-            return winner;
+            return lost;
         }
 
         public bool WasWronglyAnswered()
@@ -127,11 +123,6 @@ namespace trivia
             var category = _categoryProvider.GetCategory(CurrentPlayerLocation);
             Console.WriteLine("The category is " + category);
             Console.WriteLine(_questionProvider.GetQuestion(category));
-        }
-
-        private bool DidPlayerWin()
-        {
-            return _purses[_currentPlayerIndex] != 6;
         }
     }
 }
