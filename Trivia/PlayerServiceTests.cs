@@ -154,7 +154,7 @@ namespace Trivia
         {
             var playerService = new PlayerService();
 
-            Assert.Throws<InvalidOperationException>(() => { playerService.MoveCurrentPlayer(1); });
+            Assert.Throws<InvalidOperationException>(() => { playerService.Move(1); });
         }
 
         [TestCase(-1)]
@@ -165,7 +165,7 @@ namespace Trivia
 
             playerService.Add(PlayerOneName);
 
-            Assert.Throws<ArgumentException>(() => { playerService.MoveCurrentPlayer(offset); });
+            Assert.Throws<ArgumentException>(() => { playerService.Move(offset); });
         }
 
         [Test]
@@ -174,7 +174,7 @@ namespace Trivia
             var playerService = new PlayerService();
             playerService.Add(PlayerOneName);
 
-            playerService.MoveCurrentPlayer(5);
+            playerService.Move(5);
 
             Assert.That(playerService.Current.Location, Is.EqualTo(new Location(5)));
         }

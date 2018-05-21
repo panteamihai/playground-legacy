@@ -77,7 +77,7 @@ namespace Trivia
 
         private void Move(int roll)
         {
-            _playerService.MoveCurrentPlayer(roll);
+            _playerService.Move(roll);
             AskQuestion();
         }
 

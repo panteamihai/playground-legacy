@@ -25,9 +25,9 @@ namespace Trivia
             Location = Location.Start;
         }
 
-        public void Move(int offset)
+        public void Move(Location location)
         {
-            Location = Location.Advance(offset);
+            Location = location;
         }
 
         public override int GetHashCode()
@@ -41,6 +41,11 @@ namespace Trivia
                 return Name == player.Name && Ordinal == player.Ordinal;
 
             return false;
+        }
+
+        public override string ToString()
+        {
+            return Name;
         }
     }
 }

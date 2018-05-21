@@ -82,6 +82,9 @@
     <Compile Include="Game.cs" />
     <Compile Include="GoldenMasterTest.cs" />
     <Compile Include="Location.cs" />
+    <Compile Include="LocationService.cs" />
+    <Compile Include="LocationServiceTests.cs" />
+    <Compile Include="LocationTests.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="PlayerService.cs" />
     <Compile Include="PlayerServiceTests.cs" />

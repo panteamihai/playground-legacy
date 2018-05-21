@@ -13,9 +13,17 @@ namespace Trivia
 
     public class PlayerService : IPlayerService
     {
+        private readonly ILocationService _locationService;
         private readonly IList<Player> _players = new List<Player>();
 
         private int _currentOrdinal;
+
+        public PlayerService() : this(new LocationService()) { }
+
+        public PlayerService(ILocationService locationService)
+        {
+            _locationService = locationService;
+        }
 
         public Player Current => _players.Single(p => p.Ordinal == _currentOrdinal);
 
@@ -39,16 +47,15 @@ namespace Trivia
             if (_currentOrdinal == _players.Count) _currentOrdinal = 0;
         }
 
-        public void MoveCurrentPlayer(int offset)
+        public void Move(int offset)
         {
             if (_players.Count == 0)
                 throw new InvalidOperationException();
 
-            if (offset <= 0)
-                throw new ArgumentException();
+            var newLocation = _locationService.AdvanceBy(Current.Location, offset);
+            Console.WriteLine(Current + "'s new location is " + newLocation);
 
-            Current.Move(offset);
-            Console.WriteLine(Current.Name + "'s new location is " + Current.Location);
+            Current.Move(newLocation);
         }
     }
 }
