@@ -1,30 +1,27 @@
 ﻿using NUnit.Framework;
-using System;
 using trivia.models;
 
 namespace trivia.tests.models
 {
     public class LocationTests
     {
-        [TestCase(-1)]
-        [TestCase(-20)]
-        public void NegativeValues_AreForbidden_InCtor(int invalidValue)
-        {
-            Assert.Throws<ArgumentException>(() => { var x = new Location(invalidValue); });
-        }
-
         [Test]
         public void TheStartPosition_IsZero()
         {
             Assert.That(Location.Start, Is.EqualTo(new Location(0)));
         }
 
-        [TestCase(0)]
-        [TestCase(1)]
-        [TestCase(22)]
-        public void GivenValidCtorParameter_Value_IsSet(int validValue)
+        [TestCase(5, 5, ExpectedResult = true)]
+        [TestCase(5, 10, ExpectedResult = false)]
+        public bool GivenTwoLocations_WithSameValue_AreEqual(int first, int second)
         {
-            Assert.That(new Location(validValue).Value, Is.EqualTo(validValue));
+            return new Location(first).Equals(new Location(second));
+        }
+
+        [Test]
+        public void GivenLocation_WhenComparingToOtherValueObject_EqualityReturnsFalse()
+        {
+            Assert.That(new Location(5), Is.Not.EqualTo(new ValueObjectFake(5)));
         }
     }
 }

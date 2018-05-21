@@ -1,25 +1,10 @@
-﻿using System;
-
-namespace trivia.models
+﻿namespace trivia.models
 {
-    public class Location
+    public class Location : ValueObject
     {
         public static readonly Location Start = new Location(0);
 
-        public int Value { get; }
-
-        public Location(int value)
-        {
-            if(value < 0)
-                throw new ArgumentException();
-
-            Value = value;
-        }
-
-        public override int GetHashCode()
-        {
-            return Value.GetHashCode();
-        }
+        public Location(int value) : base(value) { }
 
         public override bool Equals(object obj)
         {
@@ -27,11 +12,6 @@ namespace trivia.models
                 return Value == location.Value;
 
             return false;
-        }
-
-        public override string ToString()
-        {
-            return Value.ToString();
         }
     }
 }

@@ -68,6 +68,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="services\QuestionServiceTests.cs" />
     <Compile Include="providers\QuestionProviderTests.cs" />
+    <Compile Include="models\ValueObjectFake.cs" />
+    <Compile Include="models\ValueObjectTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

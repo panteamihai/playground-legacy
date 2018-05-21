@@ -25,7 +25,7 @@ namespace trivia.models
             Location = Location.Start;
         }
 
-        public void Move(Location location)
+        public void MoveTo(Location location)
         {
             Location = location;
         }

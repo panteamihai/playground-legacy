@@ -64,6 +64,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="models\ValueObject.cs" />
     <Compile Include="providers\CategoryProvider.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="models\Location.cs" />

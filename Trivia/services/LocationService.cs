@@ -10,7 +10,7 @@ namespace trivia.services
 
     public class LocationService : ILocationService
     {
-        private static readonly int BoundaryPoint = 12;
+        private const int BoundaryPoint = 12;
 
         public Location AdvanceBy(Location current, int offset)
         {

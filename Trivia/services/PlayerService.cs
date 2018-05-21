@@ -62,7 +62,7 @@ namespace trivia.services
             var newLocation = _locationService.AdvanceBy(Current.Location, offset);
             Console.WriteLine(Current + "'s new location is " + newLocation);
 
-            Current.Move(newLocation);
+            Current.MoveTo(newLocation);
         }
     }
 }
