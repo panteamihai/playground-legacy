@@ -10,6 +10,12 @@ namespace trivia.services
         Player Current { get; }
 
         int Count { get; }
+
+        void Add(string name);
+
+        void GiveTurnToNextPlayer();
+
+        void Move(int offset);
     }
 
     public class PlayerService : IPlayerService

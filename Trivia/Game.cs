@@ -8,7 +8,7 @@ namespace trivia
     {
         private readonly IQuestionProvider _questionProvider;
         private readonly ICategoryProvider _categoryProvider;
-        private readonly PlayerService _playerService;
+        private readonly IPlayerService _playerService;
 
         private int _currentPlayerIndex => _playerService.Current.Ordinal;
 
@@ -25,6 +25,7 @@ namespace trivia
 
         public bool IsPlayable => PlayerCount >= 2;
 
+
         public Game()
         {
             _categoryProvider = new CategoryProvider();
@@ -32,10 +33,11 @@ namespace trivia
             _playerService = new PlayerService();
         }
 
-        public Game(ICategoryProvider categoryProvider, IQuestionProvider questionProvider)
+        public Game(ICategoryProvider categoryProvider, IQuestionProvider questionProvider, IPlayerService playerService)
         {
             _categoryProvider = categoryProvider;
             _questionProvider = questionProvider;
+            _playerService = playerService;
         }
 
         public void Add(string playerName)
