@@ -1,13 +1,14 @@
 ﻿using NUnit.Framework;
 using System;
+using trivia.models;
 
 namespace trivia.tests
 {
     [TestFixture]
     public class GameTests
     {
-        private const string PlayerOne = "Gheo";
-        private const string PlayerTwo = "Iuon";
+        private static readonly Player PlayerOne = new Player("Gheo", 0);
+        private static readonly Player PlayerTwo = new Player("Iuon", 1);
 
         [Test]
         public void GivenANewGame_IsPlayable_ReturnsFalse()
@@ -61,7 +62,7 @@ namespace trivia.tests
         public void GivenAGameWithOnePlayer_IsPlayable_ReturnsFalse()
         {
             var game = new Game();
-            game.Add(PlayerOne);
+            game.Add(PlayerOne.Name);
 
             Assert.That(game.IsPlayable, Is.False);
         }
@@ -70,7 +71,7 @@ namespace trivia.tests
         public void GivenAGameWithOnePlayer_HowManyPlayers_ReturnsOne()
         {
             var game = new Game();
-            game.Add(PlayerOne);
+            game.Add(PlayerOne.Name);
 
             Assert.That(game.PlayerCount, Is.EqualTo(1));
         }
@@ -79,7 +80,7 @@ namespace trivia.tests
         public void GivenAGameWithOnePlayer_CurrentPlayer_ReturnPlayerName()
         {
             var game = new Game();
-            game.Add(PlayerOne);
+            game.Add(PlayerOne.Name);
 
            Assert.That(game.CurrentPlayer, Is.EqualTo(PlayerOne));
         }
@@ -88,7 +89,7 @@ namespace trivia.tests
         public void GivenAGameWithOnePlayer_WasCorrectlyAnswered_ReturnsTrue()
         {
             var game = new Game();
-            game.Add(PlayerOne);
+            game.Add(PlayerOne.Name);
 
             Assert.That(game.WasCorrectlyAnswered(), Is.True);
         }
@@ -97,7 +98,7 @@ namespace trivia.tests
         public void GivenAGameWithOnePlayer_WasWronglyAnswered_ReturnsTrue()
         {
             var game = new Game();
-            game.Add(PlayerOne);
+            game.Add(PlayerOne.Name);
 
             Assert.That(game.WasWronglyAnswered(), Is.True);
         }
@@ -106,7 +107,7 @@ namespace trivia.tests
         public void GivenAGameWithOnePlayer_WasCorrectlyAnswered_CurrentPlayerStayTheSame()
         {
             var game = new Game();
-            game.Add(PlayerOne);
+            game.Add(PlayerOne.Name);
 
             game.WasCorrectlyAnswered();
 
@@ -117,7 +118,7 @@ namespace trivia.tests
         public void GivenAGameWithOnePlayer_WasWronglyAnswered_CurrentPlayerStayTheSame()
         {
             var game = new Game();
-            game.Add(PlayerOne);
+            game.Add(PlayerOne.Name);
 
             game.WasWronglyAnswered();
 
@@ -128,7 +129,7 @@ namespace trivia.tests
         public void GivenAGameWithOnePlayer_WhenRolling_ThenThrows()
         {
             var game = new Game();
-            game.Add(PlayerOne);
+            game.Add(PlayerOne.Name);
             Assert.Throws<InvalidOperationException>(() => game.Roll(5));
         }
 
@@ -136,8 +137,8 @@ namespace trivia.tests
         public void GivenAGameWithTwoPlayers_IsPlayable_ReturnsTrue()
         {
             var game = new Game();
-            game.Add(PlayerOne);
-            game.Add(PlayerTwo);
+            game.Add(PlayerOne.Name);
+            game.Add(PlayerTwo.Name);
 
             Assert.That(game.IsPlayable, Is.True);
         }
@@ -146,8 +147,8 @@ namespace trivia.tests
         public void GivenAGameWithTwoPlayers_HowManyPlayers_ReturnsTwo()
         {
             var game = new Game();
-            game.Add(PlayerOne);
-            game.Add(PlayerTwo);
+            game.Add(PlayerOne.Name);
+            game.Add(PlayerTwo.Name);
 
             Assert.That(game.PlayerCount, Is.EqualTo(2));
         }
@@ -156,8 +157,8 @@ namespace trivia.tests
         public void GivenAGameWithTwoPlayers_CurrentPlayer_ReturnFirstPlayerName()
         {
             var game = new Game();
-            game.Add(PlayerOne);
-            game.Add(PlayerTwo);
+            game.Add(PlayerOne.Name);
+            game.Add(PlayerTwo.Name);
 
             Assert.That(game.CurrentPlayer, Is.EqualTo(PlayerOne));
         }
@@ -166,8 +167,8 @@ namespace trivia.tests
         public void GivenAGameWithTwoPlayers_WasCorrectlyAnswered_ReturnsTrue()
         {
             var game = new Game();
-            game.Add(PlayerOne);
-            game.Add(PlayerTwo);
+            game.Add(PlayerOne.Name);
+            game.Add(PlayerTwo.Name);
 
             Assert.That(game.WasCorrectlyAnswered(), Is.True);
         }
@@ -176,8 +177,8 @@ namespace trivia.tests
         public void GivenAGameWithTwoPlayers_WasWronglyAnswered_ReturnsTrue()
         {
             var game = new Game();
-            game.Add(PlayerOne);
-            game.Add(PlayerTwo);
+            game.Add(PlayerOne.Name);
+            game.Add(PlayerTwo.Name);
 
             Assert.That(game.WasWronglyAnswered(), Is.True);
         }
@@ -186,8 +187,8 @@ namespace trivia.tests
         public void GivenAGameWithTwoPlayers_WasCorrectlyAnswered_CurrentPlayerChanges()
         {
             var game = new Game();
-            game.Add(PlayerOne);
-            game.Add(PlayerTwo);
+            game.Add(PlayerOne.Name);
+            game.Add(PlayerTwo.Name);
 
             game.WasCorrectlyAnswered();
 
@@ -198,8 +199,8 @@ namespace trivia.tests
         public void GivenAGameWithTwoPlayers_WasWronglyAnswered_CurrentPlayerChanges()
         {
             var game = new Game();
-            game.Add(PlayerOne);
-            game.Add(PlayerTwo);
+            game.Add(PlayerOne.Name);
+            game.Add(PlayerTwo.Name);
 
             game.WasWronglyAnswered();
 
@@ -211,8 +212,8 @@ namespace trivia.tests
             [Values(1,2,3,4,5,6,7,8,9,10,11,12,13)] int roll)
         {
             var game = new Game();
-            game.Add(PlayerOne);
-            game.Add(PlayerTwo);
+            game.Add(PlayerOne.Name);
+            game.Add(PlayerTwo.Name);
 
             game.Roll(roll);
 
@@ -224,8 +225,8 @@ namespace trivia.tests
             [Values(-1, -2)] int negativeRoll)
         {
             var game = new Game();
-            game.Add(PlayerOne);
-            game.Add(PlayerTwo);
+            game.Add(PlayerOne.Name);
+            game.Add(PlayerTwo.Name);
 
             Assert.Throws<ArgumentException>(() => game.Roll(negativeRoll));
         }

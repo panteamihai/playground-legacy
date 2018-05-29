@@ -25,5 +25,10 @@ namespace trivia.models
         {
             return Value.ToString();
         }
+
+        public static implicit operator int(ValueObject vo)
+        {
+            return vo.Value;
+        }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using trivia.models;
 using trivia.providers;
 using trivia.services;
 
@@ -15,10 +16,9 @@ namespace trivia
         private readonly bool[] _inPenaltyBox = new bool[6];
         private bool _isGettingOutOfPenaltyBox;
 
+        public int CurrentPlayerLocation => _playerService.Current.Location;
 
-        public int CurrentPlayerLocation => _playerService.Current.Location.Value;
-
-        public string CurrentPlayer => _playerService.Current.Name;
+        public Player CurrentPlayer => _playerService.Current;
 
         public int PlayerCount => _playerService.Count;
 
