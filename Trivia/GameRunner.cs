@@ -25,7 +25,7 @@ namespace trivia
 
     public class GameRunner
     {
-        private static bool notAWinner;
+        private static bool continueGame;
 
         public static void Main(string[] args)
         {
@@ -44,16 +44,9 @@ namespace trivia
             {
                 aGame.Roll(random.Next(5) + 1);
 
-                if (random.Next(9) == 7)
-                {
-                    notAWinner = aGame.WasWronglyAnswered();
-                }
-                else
-                {
-                    notAWinner = aGame.WasCorrectlyAnswered();
-                }
+                continueGame = random.Next(9) == 7 ? aGame.ShouldContinueAfterWrongAnswer() : aGame.ShouldContinueAfterRightAnswer();
             }
-            while (notAWinner);
+            while (continueGame);
         }
     }
 }

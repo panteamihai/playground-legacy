@@ -82,40 +82,57 @@ namespace trivia
             AskQuestion();
         }
 
-        public bool WasCorrectlyAnswered()
+        public bool ShouldContinueAfterRightAnswer()
         {
             if (_inPenaltyBox[_currentPlayerIndex])
             {
                 if (_isGettingOutOfPenaltyBox)
                 {
-                    return Winner("Answer was correct!!!!");
+                    return ShouldContinueAfterRightAnswer("Answer was correct!!!!");
                 }
 
                 _playerService.GiveTurnToNextPlayer();
                 return true;
             }
-            return Winner("Answer was corrent!!!!");
+
+            return ShouldContinueAfterRightAnswer("Answer was corrent!!!!");
         }
 
-        private bool Winner(string answerWasCorrent)
+        private bool ShouldContinueAfterRightAnswer(string correctAnswerMessage)
         {
-            Console.WriteLine(answerWasCorrent);
-            _playerService.CollectOneCoin();
+            DoRightAnswerAction(correctAnswerMessage);
 
-            var lost = !_playerService.HasCurrentPlayerWon();
+            var doesGameContinue =  DoesGameContinue();
             _playerService.GiveTurnToNextPlayer();
 
-            return lost;
+            return doesGameContinue;
         }
 
-        public bool WasWronglyAnswered()
+        private void DoRightAnswerAction(string correctAnswerMessage)
+        {
+            Console.WriteLine(correctAnswerMessage);
+            _playerService.CollectOneCoin();
+        }
+
+        private bool DoesGameContinue()
+        {
+            return !_playerService.HasCurrentPlayerWon();
+        }
+
+        public bool ShouldContinueAfterWrongAnswer()
+        {
+            DoWrongAnswerAction();
+
+            _playerService.GiveTurnToNextPlayer();
+
+            return true;
+        }
+
+        private void DoWrongAnswerAction()
         {
             Console.WriteLine("Question was incorrectly answered");
             Console.WriteLine(CurrentPlayer + " was sent to the penalty box");
             _inPenaltyBox[_currentPlayerIndex] = true;
-
-            _playerService.GiveTurnToNextPlayer();
-            return true;
         }
 
         private void AskQuestion()

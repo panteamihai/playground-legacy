@@ -39,7 +39,7 @@ namespace trivia.tests
         {
             var game = new Game();
 
-            Assert.Throws<InvalidOperationException>(() => game.WasCorrectlyAnswered());
+            Assert.Throws<InvalidOperationException>(() => game.ShouldContinueAfterRightAnswer());
         }
 
         [Test]
@@ -47,7 +47,7 @@ namespace trivia.tests
         {
             var game = new Game();
 
-            Assert.Throws<InvalidOperationException>(() => game.WasWronglyAnswered());
+            Assert.Throws<InvalidOperationException>(() => game.ShouldContinueAfterWrongAnswer());
         }
 
         [Test]
@@ -91,7 +91,7 @@ namespace trivia.tests
             var game = new Game();
             game.Add(PlayerOne.Name);
 
-            Assert.That(game.WasCorrectlyAnswered(), Is.True);
+            Assert.That(game.ShouldContinueAfterRightAnswer(), Is.True);
         }
 
         [Test]
@@ -100,7 +100,7 @@ namespace trivia.tests
             var game = new Game();
             game.Add(PlayerOne.Name);
 
-            Assert.That(game.WasWronglyAnswered(), Is.True);
+            Assert.That(game.ShouldContinueAfterWrongAnswer(), Is.True);
         }
 
         [Test]
@@ -109,7 +109,7 @@ namespace trivia.tests
             var game = new Game();
             game.Add(PlayerOne.Name);
 
-            game.WasCorrectlyAnswered();
+            game.ShouldContinueAfterRightAnswer();
 
             Assert.That(game.CurrentPlayer, Is.EqualTo(PlayerOne));
         }
@@ -120,7 +120,7 @@ namespace trivia.tests
             var game = new Game();
             game.Add(PlayerOne.Name);
 
-            game.WasWronglyAnswered();
+            game.ShouldContinueAfterWrongAnswer();
 
             Assert.That(game.CurrentPlayer, Is.EqualTo(PlayerOne));
         }
@@ -170,7 +170,7 @@ namespace trivia.tests
             game.Add(PlayerOne.Name);
             game.Add(PlayerTwo.Name);
 
-            Assert.That(game.WasCorrectlyAnswered(), Is.True);
+            Assert.That(game.ShouldContinueAfterRightAnswer(), Is.True);
         }
 
         [Test]
@@ -180,7 +180,7 @@ namespace trivia.tests
             game.Add(PlayerOne.Name);
             game.Add(PlayerTwo.Name);
 
-            Assert.That(game.WasWronglyAnswered(), Is.True);
+            Assert.That(game.ShouldContinueAfterWrongAnswer(), Is.True);
         }
 
         [Test]
@@ -190,7 +190,7 @@ namespace trivia.tests
             game.Add(PlayerOne.Name);
             game.Add(PlayerTwo.Name);
 
-            game.WasCorrectlyAnswered();
+            game.ShouldContinueAfterRightAnswer();
 
             Assert.That(game.CurrentPlayer, Is.EqualTo(PlayerTwo));
         }
@@ -202,7 +202,7 @@ namespace trivia.tests
             game.Add(PlayerOne.Name);
             game.Add(PlayerTwo.Name);
 
-            game.WasWronglyAnswered();
+            game.ShouldContinueAfterWrongAnswer();
 
             Assert.That(game.CurrentPlayer, Is.EqualTo(PlayerTwo));
         }
