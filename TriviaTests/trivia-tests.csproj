@@ -65,6 +65,7 @@
     <Compile Include="services\CoinServiceTests.cs" />
     <Compile Include="services\LocationServiceTests.cs" />
     <Compile Include="models\LocationTests.cs" />
+    <Compile Include="services\PenaltyServiceTests.cs" />
     <Compile Include="services\PlayerServiceTests.cs" />
     <Compile Include="models\PlayerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

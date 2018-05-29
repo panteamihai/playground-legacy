@@ -65,6 +65,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="models\CoinBalance.cs" />
+    <Compile Include="models\Penalty.cs" />
     <Compile Include="models\ValueObject.cs" />
     <Compile Include="providers\CategoryProvider.cs" />
     <Compile Include="Game.cs" />
@@ -72,6 +73,7 @@
     <Compile Include="services\CoinService.cs" />
     <Compile Include="services\LocationService.cs" />
     <Compile Include="models\Player.cs" />
+    <Compile Include="services\PenaltyService.cs" />
     <Compile Include="services\PlayerService.cs" />
     <Compile Include="enums\QuestionCategory.cs" />
     <Compile Include="GameRunner.cs" />

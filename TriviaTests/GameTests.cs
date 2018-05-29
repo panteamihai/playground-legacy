@@ -217,7 +217,7 @@ namespace trivia.tests
 
             game.Roll(roll);
 
-            Assert.That(game.CurrentPlayerLocation, Is.EqualTo(roll % 12));
+            Assert.That(game.CurrentPlayer.Location, Is.EqualTo(new Location(roll % 12)));
         }
 
         [Test]

@@ -20,22 +20,33 @@ namespace trivia.services
         void CollectOneCoin();
 
         bool HasCurrentPlayerWon();
+
+        void PenalizeCurrentPlayer();
+
+        bool CanTemporarilyOvercomePenalty(int roll);
+
+        bool HasCurrentPlayerIncurredPenalty();
+
+        bool HasCurrentPlayerTemporarilyOvercomePenalty();
     }
 
     public class PlayerService : IPlayerService
     {
         private readonly ILocationService _locationService;
         private readonly ICoinService _coinService;
+
+        private readonly IPenaltyService _penaltyService;
         private readonly IList<Player> _players = new List<Player>();
 
         private int _currentOrdinal;
 
-        public PlayerService() : this(new LocationService(), new CoinService()) { }
+        public PlayerService() : this(new LocationService(), new CoinService(), new PenaltyService()) { }
 
-        public PlayerService(ILocationService locationService, ICoinService coinService)
+        public PlayerService(ILocationService locationService, ICoinService coinService, IPenaltyService penaltyService)
         {
             _locationService = locationService;
             _coinService = coinService;
+            _penaltyService = penaltyService;
         }
 
         public Player Current => _players.Single(p => p.Ordinal == _currentOrdinal);
@@ -55,6 +66,8 @@ namespace trivia.services
         {
             if(_players.Count == 0)
                 throw new InvalidOperationException();
+
+            _penaltyService.ResetHope(Current);
 
             _currentOrdinal = _currentOrdinal + 1;
             if (_currentOrdinal == _players.Count) _currentOrdinal = 0;
@@ -77,6 +90,35 @@ namespace trivia.services
             Console.WriteLine(Current + " now has " + coinBalance + " Gold Coins.");
 
             Current.UpdateBalance(coinBalance);
+        }
+
+        public void PenalizeCurrentPlayer()
+        {
+            Console.WriteLine(Current + " was sent to the penalty box");
+            _penaltyService.Incur(Current);
+        }
+
+        public bool CanTemporarilyOvercomePenalty(int roll)
+        {
+            if (_penaltyService.CanTemporarilyOvercomePenalty(roll))
+            {
+                _penaltyService.TemporarilyOvercome(Current);
+                Console.WriteLine(Current + " is getting out of the penalty box");
+                return true;
+            }
+
+            Console.WriteLine(Current + " is not getting out of the penalty box");
+            return false;
+        }
+
+        public bool HasCurrentPlayerIncurredPenalty()
+        {
+            return _penaltyService.HasIncurredPenalty(Current);
+        }
+
+        public bool HasCurrentPlayerTemporarilyOvercomePenalty()
+        {
+            return _penaltyService.HasTemporarilyOvercomePenalty(Current);
         }
 
         public bool HasCurrentPlayerWon()

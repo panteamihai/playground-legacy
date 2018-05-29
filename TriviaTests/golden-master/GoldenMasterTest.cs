@@ -31,9 +31,9 @@ namespace trivia.tests
                 var runOutput = output.ToString();
                 File.WriteAllText("Output.txt", runOutput);
 
-                Assert.That(runOutput, Is.EqualTo(goldenMaster.ReadToEnd()));
-
                 Console.SetOut(@out);
+
+                Assert.That(runOutput, Is.EqualTo(goldenMaster.ReadToEnd()));
             }
         }
     }

@@ -11,13 +11,6 @@ namespace trivia
         private readonly ICategoryProvider _categoryProvider;
         private readonly IPlayerService _playerService;
 
-        private int _currentPlayerIndex => _playerService.Current.Ordinal;
-
-        private readonly bool[] _inPenaltyBox = new bool[6];
-        private bool _isGettingOutOfPenaltyBox;
-
-        public int CurrentPlayerLocation => _playerService.Current.Location;
-
         public Player CurrentPlayer => _playerService.Current;
 
         public int PlayerCount => _playerService.Count;
@@ -41,7 +34,6 @@ namespace trivia
         public void Add(string playerName)
         {
             _playerService.Add(playerName);
-            _inPenaltyBox[PlayerCount] = false;
         }
 
         public void Roll(int roll)
@@ -55,20 +47,10 @@ namespace trivia
             Console.WriteLine(CurrentPlayer + " is the current player");
             Console.WriteLine("They have rolled a " + roll);
 
-            if (_inPenaltyBox[_currentPlayerIndex])
+            if (_playerService.HasCurrentPlayerIncurredPenalty())
             {
-                if (roll % 2 != 0)
-                {
-                    _isGettingOutOfPenaltyBox = true;
-
-                    Console.WriteLine(CurrentPlayer + " is getting out of the penalty box");
+                if(_playerService.CanTemporarilyOvercomePenalty(roll))
                     Move(roll);
-                }
-                else
-                {
-                    Console.WriteLine(CurrentPlayer + " is not getting out of the penalty box");
-                    _isGettingOutOfPenaltyBox = false;
-                }
             }
             else
             {
@@ -84,18 +66,14 @@ namespace trivia
 
         public bool ShouldContinueAfterRightAnswer()
         {
-            if (_inPenaltyBox[_currentPlayerIndex])
-            {
-                if (_isGettingOutOfPenaltyBox)
-                {
-                    return ShouldContinueAfterRightAnswer("Answer was correct!!!!");
-                }
+            if (!_playerService.HasCurrentPlayerIncurredPenalty())
+                return ShouldContinueAfterRightAnswer("Answer was corrent!!!!");
 
-                _playerService.GiveTurnToNextPlayer();
-                return true;
-            }
+            if (_playerService.HasCurrentPlayerTemporarilyOvercomePenalty())
+                return ShouldContinueAfterRightAnswer("Answer was correct!!!!");
 
-            return ShouldContinueAfterRightAnswer("Answer was corrent!!!!");
+            _playerService.GiveTurnToNextPlayer();
+            return true;
         }
 
         private bool ShouldContinueAfterRightAnswer(string correctAnswerMessage)
@@ -131,13 +109,12 @@ namespace trivia
         private void DoWrongAnswerAction()
         {
             Console.WriteLine("Question was incorrectly answered");
-            Console.WriteLine(CurrentPlayer + " was sent to the penalty box");
-            _inPenaltyBox[_currentPlayerIndex] = true;
+            _playerService.PenalizeCurrentPlayer();
         }
 
         private void AskQuestion()
         {
-            var category = _categoryProvider.GetCategory(CurrentPlayerLocation);
+            var category = _categoryProvider.GetCategory(CurrentPlayer.Location);
             Console.WriteLine("The category is " + category);
             Console.WriteLine(_questionProvider.GetQuestion(category));
         }

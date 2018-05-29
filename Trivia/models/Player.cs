@@ -12,6 +12,8 @@ namespace trivia.models
 
         public CoinBalance CoinBalance { get; private set; }
 
+        public Penalty Penalty { get; private set; }
+
         public Player(string name, int ordinal)
         {
             if (string.IsNullOrWhiteSpace(name))
@@ -24,6 +26,7 @@ namespace trivia.models
             Ordinal = ordinal;
             Location = Location.Start;
             CoinBalance = CoinBalance.Empty;
+            Penalty = Penalty.None;
         }
 
         public void MoveTo(Location location)
@@ -34,6 +37,11 @@ namespace trivia.models
         public void UpdateBalance(CoinBalance coinBalance)
         {
             CoinBalance = coinBalance;
+        }
+
+        public void TransitionPenaltyTo(Penalty penalty)
+        {
+            Penalty = penalty;
         }
 
         public override int GetHashCode()
